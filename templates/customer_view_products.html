@@ -1,0 +1,42 @@
+{% include 'customer_header.html' %}
+<center>
+    <h3>Available Items</h3>
+   
+    <div >
+        <form action="" method="post">
+        <div>
+            <input type="text" placeholder="Search" name="search" id="">
+            <input type="submit" name="searchbtn" value="Search" id="">
+        </div>
+        </form>
+    </div>
+
+    {% for row in data['res'] %}
+    <a href="singleview?pdid={{ row['pdetails_id'] }}">
+    <div class="p-main">
+       <img width="100" height="100" src="/{{ row['product_img'] }}" alt="">
+        <p style="text-transform: uppercase;">{{ row['product_name'] }}</p>
+        <p style="font-size: .8em;">{{ row['product_desc'] }}</p>
+        <p>Price: <span style="font-weight: 900;">₹{{ row['selling_price'] }}</span> </p>
+      
+    </div>
+    </a>
+   
+    {% endfor %}  
+ 
+</center>
+
+<style>
+    .p-main{
+        background: rgb(218, 217, 217);
+        margin: 10px 0px;
+    }
+
+    .p-main:hover{
+
+        background: rgb(200, 222, 219);
+    }
+</style>
+
+
+{% include 'footer.html' %}

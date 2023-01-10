@@ -416,3 +416,117 @@ def adminmanageitems():
             return redirect(url_for("admin.adminmanageitems"))
     return render_template('admin_manage_item.html',data=data) 
 
+@admin.route('/adminmanagepurchase',methods=['get','post'])
+def adminmanagepurchase():
+    data={}
+    q="select * from vendor"
+    data['ven']=select(q)
+    q="select * from product"
+    data['pro']=select(q)
+    if 'submit' in request.form:
+        ven=request.form['vid']
+        proid=request.form['pro']
+        cprice=request.form['cprice']
+        qty=request.form['qty']
+        total=request.form['total']
+        selling=request.form['selling']
+        q="select * from purchase_master where pstatus='pending'"
+        res=select(q)
+        if res:
+            pmmid=res[0]['pmaster_id']
+            q="select * from purchase_details where pmaster_id='%s' and  product_id='%s'"%(pmmid,proid)
+            resq=select(q)
+            if resq:
+                q="update purchase_master set total_amount=total_amount+'%s' where pmaster_id='%s'"%(total,pmmid)
+                insert(q)
+                q="update purchase_details set quantity=quantity+'%s' where product_id='%s' and pmaster_id='%s'"%(qty,proid,pmmid)
+                update(q)
+            else:
+                q="update purchase_master set total_amount=total_amount+'%s' where pmaster_id='%s'"%(total,pmmid)
+                insert(q)
+                q="insert into purchase_details values(null,'%s','%s','%s','%s','%s')"%(pmmid,proid,cprice,selling,qty)
+                insert(q)
+        else:
+            q="insert into purchase_master values(null,'%s',0,'pending','%s',now())"%(ven,total)
+            id=insert(q)
+            q="insert into purchase_details values(null,'%s','%s','%s','%s','%s')"%(id,proid,cprice,selling,qty)
+            insert(q)
+            flash('Product Added to Purchase List...')
+            return redirect(url_for('admin.adminmanagepurchase'))
+    
+    q="SELECT * FROM purchase_master pm,purchase_details pd,product p,vendor v WHERE pm.pmaster_id=pd.pmaster_id AND pd.product_id=p.product_id AND pm.vendor_id=v.vendor_id and pstatus='pending'"
+    res=select(q)
+    data['res']=select(q)
+
+    if 'btn' in request.form:
+        q="update purchase_master set pstatus='paid' where pstatus='pending'"
+        update(q)
+        flash('Purchase Completed...')
+        return redirect(url_for('admin.adminmanagepurchase'))
+    return render_template('admin_manage_purchase.html',data=data)
+
+
+@admin.route('/adminviewpur')
+def adminviewpur():
+    data={}
+    q="SELECT * FROM purchase_master pm,purchase_details pd,product p,vendor v WHERE pm.pmaster_id=pd.pmaster_id AND pd.product_id=p.product_id AND pm.vendor_id=v.vendor_id "
+    res=select(q)
+    data['res']=select(q)
+    return render_template('admin_view_purchasedlist.html',data=data)
+
+
+
+@admin.route('/adminvieworders')
+def adminvieworders():
+    data={}
+    q="SELECT * FROM order_master om,order_details od,product p,`customer` u WHERE om.order_master_id=od.order_master_id AND od.product_id=p.product_id AND om.customer_id=u.customer_id and ostatus<>'pending' group by om.order_master_id"
+    res=select(q)
+    data['res']=select(q)
+    return render_template('admin_view_booking.html',data=data)
+
+@admin.route('/adminviewdetails')
+def adminviewdetails():
+    data={}
+    omid=request.args['omid']
+    q="SELECT * FROM order_master om,order_details od,product p,`customer` u WHERE om.order_master_id=od.order_master_id AND od.product_id=p.product_id AND om.customer_id=u.customer_id and ostatus<>'pending' and om.order_master_id='%s'"%(omid)
+    res=select(q)
+    data['res']=select(q)
+    return render_template('admin_view_details.html',data=data)
+
+
+@admin.route('/adminviewpayment')
+def adminviewpayment():
+    data={}
+    omid=request.args['omid']
+    q="SELECT * FROM payment p,card c,order_master om WHERE p.card_id=c.card_id AND p.order_master_id=om.order_master_id AND p.order_master_id='%s'"%(omid)
+    data['pay']=select(q)
+    return render_template('admin_view_payments.html',data=data)
+
+
+
+@admin.route("/adminviewcomplaints",methods=['get','post'])
+def adminviewcomplaints():
+
+    
+    data={}
+    q="select * from customer inner join complaint using (customer_id)"
+    data['res']=select(q)
+
+    if 'action' in request.args:
+        action=request.args['action']
+        cid=request.args['cid']
+    else:
+        action=None
+
+    if action == "reply":
+        data['replysec']=True
+
+        if 'submit' in request.form:
+            reply=request.form['reply']
+
+            q="update complaint set reply='%s' where complaint_id='%s'"%(reply,cid)
+            update(q)
+            return redirect(url_for("admin.adminviewcomplaints"))
+    return render_template("admin_view_complaints.html",data=data)
+
+

@@ -74,3 +74,33 @@ def login():
             return redirect(url_for("public.login"))
 
     return render_template("login.html")
+
+
+@public.route('/userreg',methods=['get','post'])
+def userreg():
+    data={}
+    if 'submit' in request.form:
+        email=request.form['email']
+        password=request.form['password']
+        fname=request.form['fname']
+        lname=request.form['lname']
+        house=request.form['house']
+        street=request.form['street']
+        city=request.form['city']
+        # district=request.form['district']
+        state=request.form['state']
+        pin=request.form['pin']
+        phone=request.form['phone']
+        gender=request.form['gender']
+        dob=request.form['dob']
+        q="select * from login where username='%s'"%(email)
+        res=select(q)
+        if res:
+            flash("Username Already Exist!")
+        else:
+            q="insert into login values ('%s','%s','customer','active')"%(email,password)
+            insert(q)
+            q="insert into customer values (null,'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','inactive')"%(email,fname,lname,house,street,city,state,pin,phone,email,gender,dob)
+            insert(q)
+            return redirect(url_for("public.login"))
+    return render_template('customer_register.html',data=data)
