@@ -1,0 +1,118 @@
+{% include 'staff_header.html' %}
+<center>
+<h3>Manage Sub Category</h3>
+
+    <form action="" method="post">
+
+        <div>
+            <div>
+                <label for="">Select Category: </label>
+                <select required name="catid" id="">
+                    <option value="{% if data['raw'] %}{{data['raw'][0]['cat_id']}}{% endif %}">{% if data['raw'] %}{{data['raw'][0]['cat_name']}}{% else %} Select  {% endif %}</option>
+                    {% for row in data['cat'] %}
+                    <option value="{{ row['cat_id'] }}">{{ row['cat_name'] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        
+    </div>
+
+        <div>
+                
+            <input type="text" required placeholder="Sub category Name" name="name" id="" value="{% if data['raw'] %}{{data['raw'][0]['subcat_name']}}{% endif %}">
+        </div>
+        <div>
+                
+            <input type="text" required placeholder="Sub category description" name="desc" id="" value="{% if data['raw'] %}{{data['raw'][0]['subcat_desc']}}{% endif %}">
+              
+         
+        </div>
+        
+        
+         
+         <div>
+            <input type="submit" {% if data['raw'] %} name="update" value="Update" {% else %} value="submit" name="submit" {% endif %}>
+         </div>
+
+    </form>
+
+    <br><br>
+
+    <h5>View Available Subcategory</h5>
+    <table>
+        <tr>
+            <th>index</th>
+            <th>Sub Category</th>
+            <th>Description</th>
+            <!-- <th>Status</th> -->
+            
+        </tr>
+        {% for row in data['res'] %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ row['subcat_name'] }}</td>
+            <td>{{ row['subcat_desc'] }}</td>
+            <!-- <td>{{ row['status'] }}</td> -->
+           
+            <td><a href="?action=update&subid={{ row['subcat_id'] }}">Update</a></td>
+            <!-- <td><a onclick="return confirm('Are You Sure!')" href="?action=active&subid={{ row['subcategory_id'] }}">Active</a></td> -->
+            <!-- <td><a onclick="return confirm('Are You Sure!')" href="?action=inactive&subid={{ row['subcategory_id'] }}">Inactive</a></td> -->
+        </tr>
+        {% endfor %}
+    </table>
+</center>
+
+<script src="
+https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+    </script>
+<script>
+    $(function() {
+        $("input[name='fname']").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^A-Za-z ]/g, ''));
+
+        });
+        $("input[name='lname']").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^A-Za-z ]/g, ''));
+
+        });
+        // $("input[name='dob']").on('input', function(e) {
+        //     $(this).val($(this).val().replace(/[^0-9/]/g, ''));
+
+        // });
+        
+        $("input[name='phone']").on('input', function(e) {
+        	$(this).val($(this).val().replace(/[^0-9]/g, ''));
+            
+        });
+        $("input[name='pin']").on('input', function(e) {
+        	$(this).val($(this).val().replace(/[^0-9]/g, ''));
+            
+        });
+        $("input[name='email']").on('input', function(e) {
+              var re = /([A-Z0-9a-z_-][^@])+?@[^$#<>?]+?\.[\w]{1,}/.test(this.value);
+                if(!re) {
+                    $('#eerror').show();
+                } else {
+                    $('#eerror').hide();
+                }
+
+        });
+        $("input[name='address']").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^A-Za-z0-9()/. ]/g, ''));
+
+        });
+        $("input[name='place']").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^A-Za-z ]/g, ''));
+
+        });
+            
+        $("input[name='pwd']").on('input', function(e) {
+        	$(this).val($(this).val().replace(/[^0-9A-Za-z@/. ]/g, ''));
+            
+        });
+    });
+
+
+</script>
+
+{% include 'footer.html' %}

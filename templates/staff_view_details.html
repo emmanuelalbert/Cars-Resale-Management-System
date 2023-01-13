@@ -1,0 +1,49 @@
+{% include 'admin_header.html' %}
+
+<center>
+   
+    {% if data['res'] %}
+
+    <h3>View Details</h3>
+
+<div>
+    <div>
+        <table>
+            <tr>
+                <!-- <th>Customer Name</th> -->
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+                <th>Order Date</th>
+                <th>Order Status</th>
+
+            </tr>
+            {% for row in data['res'] %}
+            <tr>
+                <!-- <td>{{ row['c_fname'] }}{{row['c_lname']}}</td> -->
+                <td><img src="/{{row['product_img']}}" alt="" style="width: 100px; height: 100px;"><br>Product Name:{{ row['product_name'] }}<br> {{row['product_desc']}}</td>
+                <td>{{ row['total_price'] }}</td>
+                <td>{{ row['quantity'] }}</td>
+                <td>{{ row['total_amount'] }}</td>
+                <td>{{ row['date'] }}</td>
+                <td>{{ row['ostatus'] }}</td>
+                <!-- <td><a href="adminviewdetails?omid={{row['order_master_id']}}" class="btn btn-success">View Details</a></td>
+                <td><a href="viewpayment?omid={{row['order_master_id']}}" class="btn btn-success">View Payment</a></td> -->
+            </tr>
+            {% endfor %}
+        </table>
+       
+    
+    </div>
+</div>
+
+{% else %}
+<h3>View Details</h3>
+<span style="font-size: medium;color: red;">Noting Here ...</span>
+
+{% endif %}
+</center>
+
+
+{% include 'footer.html' %}

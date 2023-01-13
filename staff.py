@@ -2,17 +2,17 @@ from flask import *
 from database import *
 import uuid
 
-admin=Blueprint('admin',__name__)
+staff=Blueprint('staff',__name__)
 
-@admin.route('/adhome')
-def adhome():
+@staff.route('/adhome')
+def staffhome():
 
-    return render_template('admin_home.html')
+    return render_template('staff_home.html')
 
 
 
-@admin.route('/adminmanagestaff',methods=['get','post'])
-def adminmanagestaff():
+@staff.route('/staffmanagestaff',methods=['get','post'])
+def staffmanagestaff():
     data={}
     if 'submit' in request.form:
         email=request.form['email']
@@ -38,7 +38,7 @@ def adminmanagestaff():
             insert(q)
             q="insert into staff values (null,'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','inactive')"%(email,fname,lname,house,street,city,district,pin,phone,email,gender,dob)
             insert(q)
-            return redirect(url_for("admin.adminmanagestaff"))
+            return redirect(url_for("staff.staffmanagestaff"))
 
     data={}
     q="select * from staff"
@@ -58,13 +58,13 @@ def adminmanagestaff():
         update(q)
         q="update staff set staff_status='active' where staff_id='%s' "%(stid)
         update(q)
-        return redirect(url_for("admin.adminmanagestaff"))
+        return redirect(url_for("staff.staffmanagestaff"))
     if action == "inactive":
         q="update login set status='inactive' where username='%s' "%(uname)
         update(q)
         q="update staff set staff_status='inactive' where staff_id='%s' "%(stid)
         update(q)
-        return redirect(url_for("admin.adminmanagestaff"))
+        return redirect(url_for("staff.staffmanagestaff"))
 
     if action == "update":
         q="select * from staff where staff_id='%s'"%(stid)
@@ -89,14 +89,14 @@ def adminmanagestaff():
 
             q="update staff set staff_fname='%s', staff_lname='%s', staff_housename='%s', staff_street='%s', staff_city='%s', staff_dist='%s', staff_pincode='%s', staff_phone='%s', staff_gender='%s', staff_dob='%s' where staff_id='%s' "%(fname,lname,house,street,city,district,pin,phone,gender,dob,stid)
             update(q)
-            return redirect(url_for("admin.adminmanagestaff"))
-    return render_template('admin_manage_staff.html',data=data) 
+            return redirect(url_for("staff.staffmanagestaff"))
+    return render_template('staff_manage_staff.html',data=data) 
 
 
 
 
-@admin.route('/adminmanagevendor',methods=['get','post'])
-def adminmanagevendor():
+@staff.route('/staffmanagevendor',methods=['get','post'])
+def staffmanagevendor():
     data={}
     if 'submit' in request.form:
        
@@ -113,9 +113,9 @@ def adminmanagevendor():
     
 
        
-        q="insert into vendor values (null,'0','%s','%s','%s','%s','%s','%s','inactive')"%(name,email,street,city,pin,phone)
+        q="insert into vendor values (null,'%s','%s','%s','%s','%s','%s','%s','inactive')"%(session['sid'],name,email,street,city,pin,phone)
         insert(q)
-        return redirect(url_for("admin.adminmanagevendor"))
+        return redirect(url_for("staff.staffmanagevendor"))
     data={}
     q="select * from vendor"
     data['res']=select(q)
@@ -133,12 +133,12 @@ def adminmanagevendor():
       
         q="update vendor set status='active' where vendor_id='%s' "%(vid)
         update(q)
-        return redirect(url_for("admin.adminmanagevendor"))
+        return redirect(url_for("staff.staffmanagevendor"))
     if action == "inactive":
        
         q="update vendor set status='inactive' where vendor_id='%s' "%(vid)
         update(q)
-        return redirect(url_for("admin.adminmanagevendor"))
+        return redirect(url_for("staff.staffmanagevendor"))
 
     if action == "update":
         q="select * from vendor where vendor_id='%s'"%(vid)
@@ -160,13 +160,13 @@ def adminmanagevendor():
 
             q="update vendor set v_name='%s', v_street='%s', v_city='%s', v_pincode='%s', v_phone='%s',v_email='%s' where vendor_id='%s' "%(name,street,city,pin,phone,email,vid)
             update(q)
-            return redirect(url_for("admin.adminmanagevendor"))
-    return render_template('admin_manage_vendor.html',data=data) 
+            return redirect(url_for("staff.staffmanagevendor"))
+    return render_template('staff_manage_vendor.html',data=data) 
 
 
 
-@admin.route('/adminmanagecourier',methods=['get','post'])
-def adminmanagecourier():
+@staff.route('/staffmanagecourier',methods=['get','post'])
+def staffmanagecourier():
     data={}
     if 'submit' in request.form:
        
@@ -195,9 +195,9 @@ def adminmanagecourier():
             q="insert into login values('%s','%s','courier','inactive')"%(uname,passw)
             insert(q)
 
-            q="insert into courier values (null,'0','%s','%s','%s','%s','%s','%s','%s','%s','inactive')"%(uname,name,email,street,city,state,pin,phone)
+            q="insert into courier values (null,'%s','%s','%s','%s','%s','%s','%s','%s','%s','inactive')"%(session['sid'],uname,name,email,street,city,state,pin,phone)
             insert(q)
-        return redirect(url_for("admin.adminmanagecourier"))
+        return redirect(url_for("staff.staffmanagecourier"))
     data={}
     q="select * from courier"
     data['res']=select(q)
@@ -215,12 +215,12 @@ def adminmanagecourier():
       
         q="update courier set status='active' where courier_id='%s' "%(vid)
         update(q)
-        return redirect(url_for("admin.adminmanagecourier"))
+        return redirect(url_for("staff.staffmanagecourier"))
     if action == "inactive":
        
         q="update courier set status='inactive' where courier_id='%s' "%(vid)
         update(q)
-        return redirect(url_for("admin.adminmanagecourier"))
+        return redirect(url_for("staff.staffmanagecourier"))
 
     if action == "update":
         q="select * from courier where courier_id='%s'"%(vid)
@@ -245,13 +245,13 @@ def adminmanagecourier():
 
             q="update courier set cour_name='%s', cour_street='%s', cour_city='%s', cour_pincode='%s', cour_phone='%s',cour_email='%s',cour_state='%s' where courier_id='%s' "%(name,street,city,pin,phone,email,state,vid)
             update(q)
-            return redirect(url_for("admin.adminmanagecourier"))
-    return render_template('admin_manage_courier.html',data=data) 
+            return redirect(url_for("staff.staffmanagecourier"))
+    return render_template('staff_manage_courier.html',data=data) 
 
 
 
-@admin.route('/adminmanagecaterogy',methods=['get','post'])
-def adminmanagecaterogy():
+@staff.route('/staffmanagecaterogy',methods=['get','post'])
+def staffmanagecaterogy():
     data={}
     if 'submit' in request.form:
         name=request.form['name']
@@ -259,7 +259,7 @@ def adminmanagecaterogy():
     
         q="insert into category values (null,'%s','%s')"%(name,desc)
         insert(q)
-        return redirect(url_for("admin.adminmanagecaterogy"))
+        return redirect(url_for("staff.staffmanagecaterogy"))
 
     data={}
     q="select * from category"
@@ -277,11 +277,11 @@ def adminmanagecaterogy():
     # if action == "active":
     #     q="update category set status='active' where category_id='%s' "%(cat_id)
     #     update(q) 
-    #     return redirect(url_for("admin.adminmanagecaterogy"))
+    #     return redirect(url_for("staff.staffmanagecaterogy"))
     # if action == "inactive":
     #     q="update category set status='inactive' where category_id='%s' "%(cat_id)
     #     update(q)
-    #     return redirect(url_for("admin.adminmanagecaterogy"))
+    #     return redirect(url_for("staff.staffmanagecaterogy"))
 
     if action == "update":
         q="select * from category where cat_id='%s'"%(cat_id)
@@ -294,13 +294,13 @@ def adminmanagecaterogy():
 
             q="update category set cat_name='%s', cat_desc='%s' where cat_id='%s' "%(name,desc,cat_id)
             update(q)
-            return redirect(url_for("admin.adminmanagecaterogy"))
-    return render_template('admin_manage_category.html',data=data) 
+            return redirect(url_for("staff.staffmanagecaterogy"))
+    return render_template('staff_manage_category.html',data=data) 
 
 
 
-@admin.route('/adminmanagesubcategory',methods=['get','post'])
-def adminmanagesubcategory():
+@staff.route('/staffmanagesubcategory',methods=['get','post'])
+def staffmanagesubcategory():
     data={}
 
     q="select * from category  "
@@ -312,7 +312,7 @@ def adminmanagesubcategory():
     
         q="insert into subcategory values (null,'%s','%s','%s')"%(catid,name,desc)
         insert(q)
-        return redirect(url_for("admin.adminmanagesubcategory"))
+        return redirect(url_for("staff.staffmanagesubcategory"))
 
 
     q="select * from subcategory inner join category using (cat_id)"
@@ -330,11 +330,11 @@ def adminmanagesubcategory():
     # if action == "active":
     #     q="update subcategory set status='active' where subcategory_id='%s' "%(subid)
     #     update(q) 
-    #     return redirect(url_for("admin.adminmanagesubcategory"))
+    #     return redirect(url_for("staff.staffmanagesubcategory"))
     # if action == "inactive":
     #     q="update subcategory set status='inactive' where subcategory_id='%s' "%(subid)
     #     update(q)
-    #     return redirect(url_for("admin.adminmanagesubcategory"))
+    #     return redirect(url_for("staff.staffmanagesubcategory"))
 
     if action == "update":
         q="select * from subcategory inner join category using(cat_id) where subcat_id='%s'"%(subid)
@@ -347,13 +347,13 @@ def adminmanagesubcategory():
 
             q="update subcategory set subcat_name='%s', subcat_desc='%s' where subcat_id='%s' "%(name,desc,subid)
             update(q)
-            return redirect(url_for("admin.adminmanagesubcategory"))
-    return render_template('admin_manage_subcategory.html',data=data) 
+            return redirect(url_for("staff.staffmanagesubcategory"))
+    return render_template('staff_manage_subcategory.html',data=data) 
 
 
 
-@admin.route('/adminmanageitems',methods=['get','post'])
-def adminmanageitems():
+@staff.route('/staffmanageitems',methods=['get','post'])
+def staffmanageitems():
     data={}
 
     q="select * from subcategory "
@@ -370,7 +370,7 @@ def adminmanageitems():
     
         q="insert into product values (null,'%s','%s','%s','%s',0,'active')"%(subid,name,desc,path)
         insert(q)
-        return redirect(url_for("admin.adminmanageitems"))
+        return redirect(url_for("staff.staffmanageitems"))
 
 
     q="select * from product"
@@ -388,11 +388,11 @@ def adminmanageitems():
     if action == "active":
         q="update product set status='active' where product_id='%s' "%(pid)
         update(q) 
-        return redirect(url_for("admin.adminmanageitems"))
+        return redirect(url_for("staff.staffmanageitems"))
     if action == "inactive":
         q="update product set status='inactive' where product_id='%s' "%(pid)
         update(q)
-        return redirect(url_for("admin.adminmanageitems"))
+        return redirect(url_for("staff.staffmanageitems"))
 
     if action == "update":
         q="select * from product where product_id='%s'"%(pid)
@@ -413,11 +413,11 @@ def adminmanageitems():
             else:
                 q="update product set product_name='%s', product_desc='%s' , product_image='%s' where product_id='%s' "%(name,desc,path,pid)
                 update(q)
-            return redirect(url_for("admin.adminmanageitems"))
-    return render_template('admin_manage_item.html',data=data) 
+            return redirect(url_for("staff.staffmanageitems"))
+    return render_template('staff_manage_item.html',data=data) 
 
-@admin.route('/adminmanagepurchase',methods=['get','post'])
-def adminmanagepurchase():
+@staff.route('/staffmanagepurchase',methods=['get','post'])
+def staffmanagepurchase():
     data={}
     q="select * from vendor"
     data['ven']=select(q)
@@ -447,12 +447,12 @@ def adminmanagepurchase():
                 q="insert into purchase_details values(null,'%s','%s','%s','%s','%s')"%(pmmid,proid,cprice,selling,qty)
                 insert(q)
         else:
-            q="insert into purchase_master values(null,'%s',0,'pending','%s',now())"%(ven,total)
+            q="insert into purchase_master values(null,'%s',%s,'pending','%s',now())"%(ven,session['sid'],total)
             id=insert(q)
             q="insert into purchase_details values(null,'%s','%s','%s','%s','%s')"%(id,proid,cprice,selling,qty)
             insert(q)
             flash('Product Added to Purchase List...')
-            return redirect(url_for('admin.adminmanagepurchase'))
+            return redirect(url_for('staff.staffmanagepurchase'))
     
     q="SELECT * FROM purchase_master pm,purchase_details pd,product p,vendor v WHERE pm.pmaster_id=pd.pmaster_id AND pd.product_id=p.product_id AND pm.vendor_id=v.vendor_id and pstatus='pending'"
     res=select(q)
@@ -462,50 +462,50 @@ def adminmanagepurchase():
         q="update purchase_master set pstatus='paid' where pstatus='pending'"
         update(q)
         flash('Purchase Completed...')
-        return redirect(url_for('admin.adminmanagepurchase'))
-    return render_template('admin_manage_purchase.html',data=data)
+        return redirect(url_for('staff.staffmanagepurchase'))
+    return render_template('staff_manage_purchase.html',data=data)
 
 
-@admin.route('/adminviewpur')
-def adminviewpur():
+@staff.route('/staffviewpur')
+def staffviewpur():
     data={}
     q="SELECT * FROM purchase_master pm,purchase_details pd,product p,vendor v WHERE pm.pmaster_id=pd.pmaster_id AND pd.product_id=p.product_id AND pm.vendor_id=v.vendor_id "
     res=select(q)
     data['res']=select(q)
-    return render_template('admin_view_purchasedlist.html',data=data)
+    return render_template('staff_view_purchasedlist.html',data=data)
 
 
 
-@admin.route('/adminvieworders')
-def adminvieworders():
+@staff.route('/staffvieworders')
+def staffvieworders():
     data={}
     q="SELECT * FROM order_master om,order_details od,product p,`customer` u WHERE om.order_master_id=od.order_master_id AND od.product_id=p.product_id AND om.customer_id=u.customer_id and ostatus<>'pending' group by om.order_master_id"
     res=select(q)
     data['res']=select(q)
-    return render_template('admin_view_booking.html',data=data)
+    return render_template('staff_view_booking.html',data=data)
 
-@admin.route('/adminviewdetails')
-def adminviewdetails():
+@staff.route('/staffviewdetails')
+def staffviewdetails():
     data={}
     omid=request.args['omid']
     q="SELECT * FROM order_master om,order_details od,product p,`customer` u WHERE om.order_master_id=od.order_master_id AND od.product_id=p.product_id AND om.customer_id=u.customer_id and ostatus<>'pending' and om.order_master_id='%s'"%(omid)
     res=select(q)
     data['res']=select(q)
-    return render_template('admin_view_details.html',data=data)
+    return render_template('staff_view_details.html',data=data)
 
 
-@admin.route('/adminviewpayment')
-def adminviewpayment():
+@staff.route('/staffviewpayment')
+def staffviewpayment():
     data={}
     omid=request.args['omid']
     q="SELECT * FROM payment p,card c,order_master om WHERE p.card_id=c.card_id AND p.order_master_id=om.order_master_id AND p.order_master_id='%s'"%(omid)
     data['pay']=select(q)
-    return render_template('admin_view_payments.html',data=data)
+    return render_template('staff_view_payments.html',data=data)
 
 
 
-@admin.route("/adminviewcomplaints",methods=['get','post'])
-def adminviewcomplaints():
+@staff.route("/staffviewcomplaints",methods=['get','post'])
+def staffviewcomplaints():
 
     
     data={}
@@ -526,7 +526,7 @@ def adminviewcomplaints():
 
             q="update complaint set reply='%s' where complaint_id='%s'"%(reply,cid)
             update(q)
-            return redirect(url_for("admin.adminviewcomplaints"))
-    return render_template("admin_view_complaints.html",data=data)
+            return redirect(url_for("staff.staffviewcomplaints"))
+    return render_template("staff_view_complaints.html",data=data)
 
 

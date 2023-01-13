@@ -1,0 +1,181 @@
+{% include 'staff_header.html' %}
+<center>
+
+
+    <h3>Purchase Purchase</h3>
+
+    <form action="" method="post">
+
+        <div>
+            <div>
+                <label for="">Select Vendor: </label>
+                <select required name="vid" id="">
+
+                    {% for row in data['ven'] %}
+                    <option value="{{ row['vendor_id'] }}">{{ row['v_name'] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        
+        </div>
+        <div>
+            <div>
+                <label for="">Select Product: </label>
+                <select required name="pro" id="">
+
+                    {% for row in data['pro'] %}
+                    <option value="{{ row['product_id'] }}">{{ row['product_name'] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+           
+        </div>
+
+        <div>
+               <label for="">Cost Price</label> 
+            <input type="text" required placeholder="Cost Price" oninput="totals()"  name="cprice" id="cost">
+        </div>
+        <div>
+            <label for="">Quantity Purchased</label> 
+            <input type="text" name="qty" id="qty" oninput="totals()" placeholder="Quantity Purchased">
+        </div>
+        <div>
+            <label for="">Total Amount Cost</label> 
+            <input type="text" name="total" id="total" placeholder="Total Price" readonly>
+        </div>
+        <div>
+            <label for="">Profit Persantage</label> 
+            <input type="text" name="per" id="pr" oninput="pers()" placeholder="Profit persentage">
+        </div>
+        <div>
+            <label for="">Selling Price</label> 
+            <input type="text" name="selling" id="sp" placeholder="Selling Price" readonly>
+        </div>
+         
+         <div>
+            <input type="submit" value="submit" name="submit">
+         </div>
+
+    </form>
+
+    <br>
+    {% if data['res'] %}
+
+        <h3>Purchased products</h3>
+
+    <div>
+        <div>
+            <table>
+                <tr>
+                    <th>Vendor Name</th>
+                    <th>Product</th>
+                    <th>Cost Price</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>Selling Price</th>
+                    <th>Puchase Date</th>
+                    <th>Purchase Status</th>
+
+                </tr>
+                {% for row in data['res'] %}
+                <tr>
+                    <td>{{ row['v_name'] }}</td>
+                    <td><img src="/{{row['product_img']}}" alt="" style="width: 100px; height: 100px;"><br>Product Name:{{ row['product_name'] }}<br> {{row['product_desc']}}</td>
+                    <td>{{ row['cost_price'] }}</td>
+                    <td>{{ row['quantity'] }}</td>
+                    <td>{{ row['total_amount'] }}</td>
+                    <td>{{ row['selling_price'] }}</td>
+                    <td>{{ row['date_added'] }}</td>
+                    <td>{{ row['pstatus'] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <div>
+                <form action="" method="post">
+                    
+                    <input type="submit" value="Complete Purchase" name="btn" id="">
+                </form>
+            </div>
+        
+        </div>
+    </div>
+
+   {% else %}
+
+   <span style="font-size: medium;color: red;">Noting Here Purchase some...</span>
+
+   {% endif %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+    </script>
+<script>
+    $(function() {
+        $("input[name='fname']").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^A-Za-z ]/g, ''));
+
+        });
+        $("input[name='lname']").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^A-Za-z ]/g, ''));
+
+        });
+        // $("input[name='dob']").on('input', function(e) {
+        //     $(this).val($(this).val().replace(/[^0-9/]/g, ''));
+
+        // });
+        
+        $("input[name='phone']").on('input', function(e) {
+        	$(this).val($(this).val().replace(/[^0-9]/g, ''));
+            
+        });
+        $("input[name='pin']").on('input', function(e) {
+        	$(this).val($(this).val().replace(/[^0-9]/g, ''));
+            
+        });
+        $("input[name='email']").on('input', function(e) {
+              var re = /([A-Z0-9a-z_-][^@])+?@[^$#<>?]+?\.[\w]{1,}/.test(this.value);
+                if(!re) {
+                    $('#eerror').show();
+                } else {
+                    $('#eerror').hide();
+                }
+
+        });
+        $("input[name='address']").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^A-Za-z0-9()/. ]/g, ''));
+
+        });
+        $("input[name='place']").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^A-Za-z ]/g, ''));
+
+        });
+            
+        $("input[name='pwd']").on('input', function(e) {
+        	$(this).val($(this).val().replace(/[^0-9A-Za-z@/. ]/g, ''));
+            
+        });
+    });
+
+function totals(){
+    var x = document.getElementById('cost').value
+    var y = document.getElementById('qty').value
+    // console.log(y);
+    // console.log(x);
+    if(x!="" || y!=""){
+
+        document.getElementById('total').value = x * y ;
+    }
+}
+function pers(){
+    let a = document.getElementById('cost').value
+    let per = document.getElementById('pr').value
+    console.log(per);
+    let b = (parseInt(a)*parseInt(per))/100;
+    console.log(b);
+    document.getElementById('sp').value = parseInt(a) + b;
+
+}
+
+
+</script>
+
+{% include 'footer.html' %}

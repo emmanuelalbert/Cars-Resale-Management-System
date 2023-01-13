@@ -1,0 +1,108 @@
+{% include 'staff_header.html' %}
+<center>
+
+
+<h3>Manage Category</h3>
+
+    <form action="" method="post">
+
+        <div>
+                
+            <input type="text" required placeholder="Category Name" name="name" id="" value="{% if data['raw'] %}{{data['raw'][0]['cat_name']}}{% endif %}">
+        </div>
+        <div>
+                
+            <input type="text" required placeholder="Category description" name="desc" id="" value="{% if data['raw'] %}{{data['raw'][0]['cat_desc']}}{% endif %}">
+              
+         
+        </div>
+        
+        
+         
+         <div>
+            <input type="submit" {% if data['raw'] %} name="update" value="Update" {% else %} value="submit" name="submit" {% endif %}>
+         </div>
+
+    </form>
+
+
+    <br><br>
+
+    <h5>View Available Category</h5>
+    <table>
+        <tr>
+            <th>index</th>
+            <th>Category</th>
+            <th>Description</th>
+            <!-- <th>Status</th> -->
+            
+        </tr>
+        {% for row in data['res'] %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ row['cat_name'] }}</td>
+            <td>{{ row['cat_desc'] }}</td>
+            <!-- <td>{{ row['status'] }}</td> -->
+           
+            <td><a  a onclick="return confirm('Are You Sure!')"href="?action=update&cat_id={{ row['cat_id'] }}">Update</a></td>
+            <!-- <td><a onclick="return confirm('Are You Sure!')" href="?action=active&cat_id={{ row['cat_id'] }}">Active</a></td>
+            <td><a onclick="return confirm('Are You Sure!')" href="?action=inactive&cat_id={{ row['cat_id'] }}">Inactive</a></td> -->
+        </tr>
+        {% endfor %}
+    </table>
+</center>
+
+<script src="
+https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+    </script>
+<script>
+    $(function() {
+        $("input[name='fname']").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^A-Za-z ]/g, ''));
+
+        });
+        $("input[name='lname']").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^A-Za-z ]/g, ''));
+
+        });
+        // $("input[name='dob']").on('input', function(e) {
+        //     $(this).val($(this).val().replace(/[^0-9/]/g, ''));
+
+        // });
+        
+        $("input[name='phone']").on('input', function(e) {
+        	$(this).val($(this).val().replace(/[^0-9]/g, ''));
+            
+        });
+        $("input[name='pin']").on('input', function(e) {
+        	$(this).val($(this).val().replace(/[^0-9]/g, ''));
+            
+        });
+        $("input[name='email']").on('input', function(e) {
+              var re = /([A-Z0-9a-z_-][^@])+?@[^$#<>?]+?\.[\w]{1,}/.test(this.value);
+                if(!re) {
+                    $('#eerror').show();
+                } else {
+                    $('#eerror').hide();
+                }
+
+        });
+        $("input[name='address']").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^A-Za-z0-9()/. ]/g, ''));
+
+        });
+        $("input[name='place']").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^A-Za-z ]/g, ''));
+
+        });
+            
+        $("input[name='pwd']").on('input', function(e) {
+        	$(this).val($(this).val().replace(/[^0-9A-Za-z@/. ]/g, ''));
+            
+        });
+    });
+
+
+</script>
+
+{% include 'footer.html' %}
