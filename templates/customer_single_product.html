@@ -1,173 +1,165 @@
 {% include 'customer_header.html' %}
 
-<form action="" method="post">
+<div class="top" style="height: 100px;"></div>
 
-  <div class="wrapper">
-    <div class="product-img">
-      <img src="/{{data['res'][0]['product_img']}}" height="420" width="327">
-    </div>
+<form action="{{ url_for('customer.customercart') }}" method="post">
+  <div class="content-container">
     <div class="product-info">
-      <div class="product-text">
-        <h1>{{data['res'][0]['product_name']}}</h1>
-        <input type="hidden" name="proid" value="{{data['res'][0]['product_id']}}">
-        <h2></h2>
-        <p>{{data['res'][0]['product_desc']}}</p>
-      </div>
-      <div class="product-price-btn">
-    
-        <p class="price">₹<span>{{data['res'][0]['selling_price']}}</span></p>
-        <input type="hidden" name="price" value="{{data['res'][0]['selling_price']}}">
+      <h1>{{ data['res'][0]['vehicle_name'] }}</h1>
+      <input type="hidden" name="proid" value="{{ data['res'][0]['vehicle_id'] }}">
+      
+      <p class="vehicle-desc">{{ data['res'][0]['vehicle_description'] }}</p>
 
-        {% if data['viewcart'] %}
-        <input class="" type="submit" name="viewcart" value="ViewCart">
-        <!-- <button type="button" name="viewcart">ViewCart</button> -->
-        {% else %}
-        <!-- <button type="button" name="addcart">AddToCart</button> -->
-        <input class="" type="submit" name="addcart" value="AddCart">
-        {% endif %}
- 
-      </div>
+      <h3>Features:</h3>
+      <ul class="features">
+        {% set feature_list = data['res'][0]['features'].split(', ') %}
+        {% for feature in feature_list %}
+          {% set parts = feature.split(': ') %}
+          <li><strong>{{ parts[0].strip() }}:</strong> {{ parts[1].strip() if parts|length > 1 else feature.strip() }}</li>
+        {% endfor %}
+      </ul>
+
+      <p class="price">Price: <span>₹{{ data['res'][0]['price'] }}</span></p>
+      <input type="hidden" name="price" value="{{ data['res'][0]['amount'] }}">
+
+      {% if data['stook'] %}
+        <input class="btn-disabled" type="submit" disabled value="Out of Stock">
+      {% else %}
+        <input class="btn-primary" type="submit" name="book_test_drive" value="Book Test Drive">
+      {% endif %}
+    </div>
+
+    <div class="product-img">
+      <img src="/{{ data['res'][0]['vehicle_image'] }}" alt="{{ data['res'][0]['vehicle_name'] }}">
     </div>
   </div>
 </form>
-{% include 'footer.html' %}
-<style>
-  
-    /* 
-* Design by Robert Mayer:https://goo.gl/CJ7yC8
-*
-*I intentionally left out the line that was supposed to be below the subheader simply because I don't like how it looks.
-*
-* Chronicle Display Roman font was substituted for similar fonts from Google Fonts.
-*/
 
+<div class="footer-space" style="height: 100px;"></div>
+{% include 'footer.html' %}
+
+<style>
+/* Reset default margin & padding for body */
 body {
   background-color: #fdf1ec;
-}
-.price{
-    padding-top: 1.2rem;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
 }
 
-.wrapper {
-  height: 420px;
-  width: 654px;
+/* Scoped styles for the content area */
+.content-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 90%;
+  max-width: 1200px;
   margin: 50px auto;
-  border-radius: 7px 7px 7px 7px;
-  /* VIA CSS MATIC https://goo.gl/cIbnS */
-  -webkit-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
-  -moz-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
   box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
 }
 
-.product-img {
-  float: left;
-  height: 420px;
-  width: 327px;
+.content-container .product-info {
+  width: 55%;
 }
 
-.product-img img {
-  border-radius: 7px 0 0 7px;
-}
-
-.product-info {
-  float: left;
-  height: 420px;
-  width: 327px;
-  border-radius: 0 7px 10px 7px;
-  background-color: #ffffff;
-}
-
-.product-text {
-  height: 300px;
-  width: 327px;
-}
-
-.product-text h1 {
-  margin: 0 0 0 38px;
-  padding-top: 52px;
+.content-container .product-info h1 {
   font-size: 34px;
-  color: #474747;
+  color: #333;
+  margin-bottom: 10px;
 }
 
-.product-text h1,
-.product-price-btn p {
-  font-family: 'Bentham', serif;
-  
+.content-container .vehicle-desc {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6em;
 }
 
-.product-text h2 {
-  margin: 0 0 47px 38px;
-  font-size: 13px;
-  font-family: 'Raleway', sans-serif;
-  font-weight: 400;
+.content-container .features {
+  list-style-type: disc; /* Bullet points */
+  padding-left: 20px; /* Indent for bullets */
+}
+
+.content-container .features li {
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #444;
+}
+
+.content-container .features li strong {
+  color: #333; /* Slightly darker for emphasis */
+}
+
+.content-container .price {
+  font-size: 22px;
+  font-weight: bold;
+  color: #d9534f;
+  margin: 20px 0;
+}
+
+.content-container .price span {
+  font-size: 26px;
+  color: #d9534f;
+  background-color: #ffeb3b; /* Highlight for price */
+  padding: 2px 8px;
+  border-radius: 5px;
+}
+
+.content-container .product-img {
+  width: 40%;
+  text-align: right;
+}
+
+.content-container .product-img img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.content-container .btn-primary {
+  display: inline-block;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: bold;
   text-transform: uppercase;
-  color: #d2d2d2;
-  letter-spacing: 0.2em;
-}
-
-.product-text p {
-  height: 125px;
-  margin: 0 0 0 38px;
-  font-family: 'Playfair Display', serif;
-  color: #8d8d8d;
-  line-height: 1.7em;
-  font-size: 15px;
-  font-weight: lighter;
-  overflow: hidden;
-}
-
-.product-price-btn {
-  height: 103px;
-  width: 327px;
-  margin-top: 17px;
-  position: relative;
-}
-
-.product-price-btn p {
-  display: inline-block;
-  position: absolute;
-  top: -13px;
-  height: 50px;
-  font-family: 'Trocchi', serif;
-  margin: 0 0 0 8px;
-  font-size: 28px;
-  font-weight: lighter;
-  color: #474747;
-}
-
-span {
-  display: inline-block;
-  height: 50px;
-  font-family: 'Suranna', serif;
-  font-size: 34px;
-}
-
-.product-price-btn input {
-  float: right;
-  display: inline-block;
-  height: 50px;
-  width: 176px;
-  margin: 0 40px 0 16px;
-  box-sizing: border-box;
-  border: transparent;
-  border-radius: 60px;
-  font-family: 'Raleway', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: #ffffff;
-  background-color: #9cebd5;
+  color: white;
+  background-color: #28a745;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
-  outline: none;
+  transition: background 0.3s;
+  box-shadow: 0 0 10px rgba(40, 167, 69, 0.5); /* Highlight for button */
 }
 
-.product-price-btn button:hover {
-  background-color: #79b0a1;
+.content-container .btn-primary:hover {
+  background-color: #218838;
+}
+
+.content-container .btn-disabled {
+  display: inline-block;
+  padding: 12px 25px;
+  font-size: 16px;
+  color: white;
+  background-color: #d9534f;
+  border: none;
+  border-radius: 5px;
+  cursor: not-allowed;
+}
+
+/* Ensure header and footer remain unaffected */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+footer {
+  width: 100%;
+  position: relative;
+  z-index: 10;
 }
 </style>
-
-
-</body>
-
-</html>

@@ -1,0 +1,184 @@
+{% include 'admin_header.html' %}
+<style>
+    .main-content {
+        min-height: calc(100vh - 200px); /* Adjust based on header/footer height */
+        padding: 20px 0;
+        background-color: #f4f7fa;
+    }
+    .content-wrapper {
+        max-width: 1100px; /* Increased to accommodate wider table */
+        margin: 0 auto;
+        padding: 20px;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .section-title {
+        text-align: center;
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #1a2a44;
+        margin-bottom: 30px;
+    }
+    .brand-form {
+        background: #2c3e50;
+        padding: 25px;
+        border-radius: 10px;
+        color: #ffffff;
+        margin-bottom: 30px;
+    }
+    .brand-form .form-label {
+        font-weight: 500;
+        margin-bottom: 8px;
+    }
+    .brand-form .form-control {
+        background: #34495e;
+        border: 1px solid #465c71;
+        color: #ffffff;
+        border-radius: 6px;
+        padding: 10px;
+    }
+    .brand-form .form-control:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 6px rgba(52, 152, 219, 0.5);
+        background: #34495e;
+        color: #ffffff;
+    }
+    .brand-form .btn {
+        border-radius: 6px;
+        padding: 10px 20px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    .brand-form .btn-success {
+        background-color: #2ecc71;
+        border-color: #2ecc71;
+    }
+    .brand-form .btn-success:hover {
+        background-color: #27ae60;
+        transform: translateY(-2px);
+    }
+    .brand-form .btn-primary {
+        background-color: #3498db;
+        border-color: #3498db;
+    }
+    .brand-form .btn-primary:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+    }
+    .brand-table {
+        background: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    .brand-table th {
+        background: #34495e;
+        color: #ffffff;
+        font-size: 0.95rem;
+        text-align: center;
+        padding: 12px;
+    }
+    .brand-table td {
+        padding: 12px 10px; /* Adjusted padding for better fit */
+        text-align: center;
+        border-bottom: 1px solid #ecf0f1;
+        vertical-align: middle;
+    }
+    .brand-table tr:hover {
+        background: #f9fbfd;
+    }
+    .action-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px; /* Increased gap for clarity */
+        flex-wrap: wrap; /* Allow wrapping on small screens */
+        min-width: 150px; /* Ensure minimum width for both buttons */
+    }
+    .btn-warning, .btn-danger {
+        padding: 6px 12px; /* Restored original padding */
+        font-size: 0.85rem;
+        min-width: 75px; /* Adjusted to fit both buttons */
+        border-radius: 6px;
+        white-space: nowrap; /* Prevent text wrapping */
+    }
+    /* Specific styling for the Actions column */
+    .brand-table td:last-child {
+        width: 200px; /* Fixed width to accommodate both buttons */
+        min-width: 150px; /* Minimum width to ensure space */
+    }
+    @media (max-width: 768px) {
+        .content-wrapper {
+            max-width: 100%; /* Full width on small screens */
+            padding: 15px;
+        }
+        .brand-table td {
+            padding: 8px 6px;
+        }
+        .action-buttons {
+            gap: 5px;
+            min-width: 130px;
+        }
+        .brand-table td:last-child {
+            width: 180px;
+            min-width: 130px;
+        }
+        .btn-warning, .btn-danger {
+            padding: 4px 10px;
+            min-width: 65px;
+            font-size: 0.8rem;
+        }
+    }
+</style>
+<div class="main-content">
+    <div class="content-wrapper">
+        <h2 class="section-title">Manage Brand</h2>
+        <div class="brand-form">
+            <form action="" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Brand Name</label>
+                    <input type="text" name="bname" class="form-control" value="{{ data['up'][0]['brand_name'] if data['up'] else '' }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Brand Description</label>
+                    <input type="text" name="bdescription" class="form-control" value="{{ data['up'][0]['brand_description'] if data['up'] else '' }}">
+                </div>
+                <div class="text-center">
+                    <button type="submit" name="{{ 'update' if data['up'] else 'brand' }}" class="btn btn-{{ 'primary' if data['up'] else 'success' }}">
+                        {{ 'Update' if data['up'] else 'Add' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <h2 class="section-title">Brand Details</h2>
+        <div class="brand-table">
+            <table class="table text-center">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Brand Name</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in data['value'] %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ i['brand_name'] }}</td>
+                        <td>{{ i['brand_description'] }}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <a href="?action=update&id={{ i['brand_id'] }}" class="btn btn-warning btn-sm">Update</a>
+                                <a href="?action=delete&id={{ i['brand_id'] }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% include 'footer.html' %}

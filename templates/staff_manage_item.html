@@ -1,139 +1,102 @@
 {% include 'staff_header.html' %}
-<center>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Vehicles</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body >
+    <div class="container py-5">
+        <div class="card bg-secondary p-4">
+            <h2 class="text-center mb-4">Manage Vehicles</h2>
+            <form action="" method="post" enctype="multipart/form-data">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Brand Name</label>
+                        <select name="bid" class="form-select">
+                            <option value="" hidden>Select Brand</option>
+                            {% for i in data['brand'] %}
+                                <option value="{{ i['brand_id'] }}">{{ i['brand_name'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Category Name</label>
+                        <select name="subid" class="form-select">
+                            <option value="" hidden>Select Category</option>
+                            {% for i in data['sub'] %}
+                                <option value="{{ i['category_id'] }}">{{ i['category_name'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Vehicle Name</label>
+                        <input type="text" name="name" value="{{ data['up'][0]['vehicle_name'] if data['up'] else '' }}" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Vehicle Description</label>
+                        <input type="text" name="desc" value="{{ data['up'][0]['vehicle_description'] if data['up'] else '' }}" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Vehicle Amount</label>
+                        <input type="text" name="amount" value="{{ data['up'][0]['amount'] if data['up'] else '' }}" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Vehicle Image</label>
+                        <input type="file" name="image" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Properties</label>
+                        <input type="text" name="prop" value="{{ data['up'][0]['features'] if data['up'] else '' }}" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Specification</label>
+                        <input type="text" name="speci" value="{{ data['up'][0]['specification'] if data['up'] else '' }}" class="form-control">
+                    </div>
+                    <div class="col-12 text-center">
+                        <button type="submit" name="{{ 'update' if data['up'] else 'submit' }}" class="btn btn-{{ 'warning' if data['up'] else 'success' }}">{{ 'Update' if data['up'] else 'Add' }}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
 
-    <h3>Manage Items</h3>
-
-    <form action="" method="post"  enctype="multipart/form-data">
-
-        <div>
-            <div>
-                <label for="">Select Sub category: </label>
-                <select required name="subid" id="">
-                    <option value="{% if data['raw'] %}{{data['raw'][0]['subcat_id']}}{% endif %}">{% if data['raw'] %}{{data['raw'][0]['subcat_name']}}{% else %} Select  {% endif %}</option>
-                    {% for row in data['sub'] %}
-                    <option value="{{ row['subcat_id'] }}">{{ row['subcat_name'] }}</option>
+        <div class="card bg-secondary p-4 mt-4">
+            <h2 class="text-center mb-4">Vehicle Details</h2>
+            <table class="table table-dark table-bordered text-center">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Vehicle Name</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Image</th>
+                        <th>Features</th>
+                        <th>Specification</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in data['value'] %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ i['vehicle_name'] }}</td>
+                        <td>{{ i['vehicle_description'] }}</td>
+                        <td>{{ i['amount'] }}</td>
+                        <td><img src="/{{ i['vehicle_image'] }}" alt="Vehicle Image" width="80" height="50" class="img-thumbnail"></td>
+                        <td>{{ i['features'] }}</td>
+                        <td>{{ i['specification'] }}</td>
+                        <td>
+                            <a href="?action=update&pid={{ i['vehicle_id'] }}" class="btn btn-warning btn-sm">Update</a>
+                            <a href="?action=delete&pid={{ i['vehicle_id'] }}" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
                     {% endfor %}
-                </select>
-            </div>
-        
+                </tbody>
+            </table>
+        </div>
     </div>
-
-        <div>
-                
-            <input type="text" required placeholder="Product Name" name="name" id="" value="{% if data['raw'] %}{{data['raw'][0]['product_name']}}{% endif %}">
-        </div>
-        <div>
-                
-            <input type="text" required placeholder="Product description" name="desc" id="" value="{% if data['raw'] %}{{data['raw'][0]['product_desc']}}{% endif %}">
-            
-        </div>
-        {% if data['raw'] %}
-
-        <div>
-            <label for="">Image: </label>
-            <img src="/{{data['raw'][0]['product_img']}}" width="60" height="60" alt="">
-        </div>
-{% endif %}
-        <div>
-                    <label for="">Image: </label>
-            <input type="file" {% if data['raw'] %} {% else %} required {% endif %} placeholder="Product Name" name="image" id="">
-        </div>
-        <!-- <div>
-                
-            <input type="number" required placeholder="Product Price" name="price" id="">
-            
-        </div> -->
-              
-        
-        
-         
-         <div>
-            <input type="submit" {% if data['raw'] %} name="update" value="Update" {% else %} value="submit" name="submit" {% endif %}>
-         </div>
-
-    </form>
-
-
-
-    <br><br>
-
-    <h5>View Available Items</h5>
-    <table>
-        <tr>
-            <th></th>
-            <th>Product</th>
-            <th>Description</th>
-            <!-- <th>Price</th> -->
-            <th>Status</th>
-            
-        </tr>
-        {% for row in data['res'] %}
-        <tr>
-            <td><img src="/{{ row['product_img'] }}" width="100" height="100" alt=""></td>
-            <td>{{ row['product_name'] }}</td>
-            <td>{{ row['product_desc'] }}</td>
-            <!-- <td>{{ row['product_price'] }}</td> -->
-            <td>{{ row['status'] }}</td>
-           
-            <td><a href="?action=update&pid={{ row['product_id'] }}">Update</a></td>
-            <td><a onclick="return confirm('Are You Sure!')" href="?action=active&pid={{ row['product_id'] }}">Active</a></td>
-            <td><a onclick="return confirm('Are You Sure!')" href="?action=inactive&pid={{ row['product_id'] }}">Inactive</a></td>
-        </tr>
-        {% endfor %}
-    </table>
-</center>
-
-<script src="
-https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
-    </script>
-<script>
-    $(function() {
-        $("input[name='fname']").on('input', function(e) {
-            $(this).val($(this).val().replace(/[^A-Za-z ]/g, ''));
-
-        });
-        $("input[name='lname']").on('input', function(e) {
-            $(this).val($(this).val().replace(/[^A-Za-z ]/g, ''));
-
-        });
-        // $("input[name='dob']").on('input', function(e) {
-        //     $(this).val($(this).val().replace(/[^0-9/]/g, ''));
-
-        // });
-        
-        $("input[name='phone']").on('input', function(e) {
-        	$(this).val($(this).val().replace(/[^0-9]/g, ''));
-            
-        });
-        $("input[name='pin']").on('input', function(e) {
-        	$(this).val($(this).val().replace(/[^0-9]/g, ''));
-            
-        });
-        $("input[name='email']").on('input', function(e) {
-              var re = /([A-Z0-9a-z_-][^@])+?@[^$#<>?]+?\.[\w]{1,}/.test(this.value);
-                if(!re) {
-                    $('#eerror').show();
-                } else {
-                    $('#eerror').hide();
-                }
-
-        });
-        $("input[name='address']").on('input', function(e) {
-            $(this).val($(this).val().replace(/[^A-Za-z0-9()/. ]/g, ''));
-
-        });
-        $("input[name='place']").on('input', function(e) {
-            $(this).val($(this).val().replace(/[^A-Za-z ]/g, ''));
-
-        });
-            
-        $("input[name='pwd']").on('input', function(e) {
-        	$(this).val($(this).val().replace(/[^0-9A-Za-z@/. ]/g, ''));
-            
-        });
-    });
-
-
-</script>
-
-{% include 'footer.html' %}
+    {% include 'footer.html' %}
+</body>
+</html>

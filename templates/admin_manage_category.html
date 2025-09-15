@@ -1,108 +1,171 @@
 {% include 'admin_header.html' %}
-<center>
-
-
-<h3>Manage Category</h3>
-
-    <form action="" method="post">
-
-        <div>
-                
-            <input type="text" required placeholder="Category Name" name="name" id="" value="{% if data['raw'] %}{{data['raw'][0]['cat_name']}}{% endif %}">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Category</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light background */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #212529; /* Dark text for body */
+        }
+        .container {
+            max-width: 1400px; /* Increased width like Manage Staff */
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: #2d2d2d; /* Dark card background for form only */
+            color: #ffffff; /* White text inside card */
+        }
+        .form-label {
+            font-weight: 500;
+            color: #ffffff; /* White labels inside form */
+        }
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #444444; /* Darker border */
+            padding: 10px;
+            background-color: #333333; /* Dark input background */
+            color: #ffffff; /* White text in inputs */
+            transition: border-color 0.3s ease;
+        }
+        .form-control:focus {
+            border-color: #00b4ff; /* Bright blue on focus */
+            box-shadow: 0 0 5px rgba(0, 180, 255, 0.5);
+            background-color: #333333;
+            color: #ffffff;
+        }
+        .btn-modern {
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn-primary.btn-modern {
+            background-color: #00b4ff; /* Bright blue for primary */
+            border-color: #00b4ff;
+        }
+        .btn-primary.btn-modern:hover {
+            background-color: #008ecc;
+            transform: translateY(-2px);
+        }
+        .btn-success.btn-modern {
+            background-color: #28a745; /* Success green */
+            border-color: #28a745;
+        }
+        .btn-success.btn-modern:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff; /* White table background */
+            color: #212529; /* Dark text for table */
+        }
+        .table thead {
+            background-color: #343a40; /* Dark gray header */
+            color: #ffffff; /* White header text */
+        }
+        .table tbody tr:hover {
+            background-color: #f1f3f5; /* Light hover effect */
+        }
+        .action-buttons {
+            display: flex;
+            gap: 5px; /* Reduced gap for tighter fit */
+            justify-content: center;
+            flex-wrap: nowrap; /* Prevent wrapping */
+        }
+        .btn-sm {
+            padding: 4px 8px; /* Smaller padding */
+            font-size: 0.8rem; /* Smaller font */
+        }
+        h3, h5 {
+            color: #212529; /* Dark headings outside form */
+            font-weight: 600;
+        }
+        /* Flexible table adjustments like Manage Staff */
+        .table th, .table td {
+            padding: 8px 4px; /* Reduced padding like Manage Staff */
+            font-size: 0.9rem; /* Slightly smaller text */
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+        .table th {
+            font-size: 0.95rem;
+        }
+        .table-container {
+            margin-top: 5rem; /* Spacing between form and table */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h3 class="text-center mb-4">Manage Category</h3>
+        <div class="card p-4 mb-5">
+            <form action="" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Category Name</label>
+                    <input type="text" class="form-control" required placeholder="Category Name" name="name" value="{% if data['raw'] %}{{data['raw'][0]['category_name']}}{% endif %}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Category Description</label>
+                    <input type="text" class="form-control" required placeholder="Category Description" name="desc" value="{% if data['raw'] %}{{data['raw'][0]['category_description']}}{% endif %}">
+                </div>
+                <div class="text-center">
+                    <input type="submit" class="btn btn-modern {% if data['raw'] %}btn-primary{% else %}btn-success{% endif %}" {% if data['raw'] %} name="update" value="Update" {% else %} value="Add" name="submit" {% endif %}>
+                </div>
+            </form>
         </div>
-        <div>
-                
-            <input type="text" required placeholder="Category description" name="desc" id="" value="{% if data['raw'] %}{{data['raw'][0]['cat_desc']}}{% endif %}">
-              
-         
+
+        <div class="table-container">
+            <h5 class="text-center mb-3">View Available Categories</h5>
+            <div class="table-responsive">
+                <table class="table table-striped text-center">
+                    <thead>
+                        <tr>
+                            <th>Index</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in data['res'] %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ row['category_name'] }}</td>
+                            <td>{{ row['category_description'] }}</td>
+                            <td class="action-buttons">
+                                <a href="?action=update&cat_id={{ row['category_id'] }}" class="btn btn-warning btn-sm">Update</a>
+                                <a href="?action=delete&cat_id={{ row['category_id'] }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-        
-        
-         
-         <div>
-            <input type="submit" {% if data['raw'] %} name="update" value="Update" {% else %} value="submit" name="submit" {% endif %}>
-         </div>
+    </div>
 
-    </form>
-
-
-    <br><br>
-
-    <h5>View Available Category</h5>
-    <table>
-        <tr>
-            <th>index</th>
-            <th>Category</th>
-            <th>Description</th>
-            <!-- <th>Status</th> -->
-            
-        </tr>
-        {% for row in data['res'] %}
-        <tr>
-            <td>{{ loop.index }}</td>
-            <td>{{ row['cat_name'] }}</td>
-            <td>{{ row['cat_desc'] }}</td>
-            <!-- <td>{{ row['status'] }}</td> -->
-           
-            <td><a  a onclick="return confirm('Are You Sure!')"href="?action=update&cat_id={{ row['cat_id'] }}">Update</a></td>
-            <!-- <td><a onclick="return confirm('Are You Sure!')" href="?action=active&cat_id={{ row['cat_id'] }}">Active</a></td>
-            <td><a onclick="return confirm('Are You Sure!')" href="?action=inactive&cat_id={{ row['cat_id'] }}">Inactive</a></td> -->
-        </tr>
-        {% endfor %}
-    </table>
-</center>
-
-<script src="
-https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(function() {
+            $("input[name='name']").on('input', function(e) {
+                $(this).val($(this).val().replace(/[^A-Za-z ]/g, ''));
+            });
+            $("input[name='desc']").on('input', function(e) {
+                $(this).val($(this).val().replace(/[^A-Za-z0-9 ]/g, ''));
+            });
+        });
     </script>
-<script>
-    $(function() {
-        $("input[name='fname']").on('input', function(e) {
-            $(this).val($(this).val().replace(/[^A-Za-z ]/g, ''));
 
-        });
-        $("input[name='lname']").on('input', function(e) {
-            $(this).val($(this).val().replace(/[^A-Za-z ]/g, ''));
-
-        });
-        // $("input[name='dob']").on('input', function(e) {
-        //     $(this).val($(this).val().replace(/[^0-9/]/g, ''));
-
-        // });
-        
-        $("input[name='phone']").on('input', function(e) {
-        	$(this).val($(this).val().replace(/[^0-9]/g, ''));
-            
-        });
-        $("input[name='pin']").on('input', function(e) {
-        	$(this).val($(this).val().replace(/[^0-9]/g, ''));
-            
-        });
-        $("input[name='email']").on('input', function(e) {
-              var re = /([A-Z0-9a-z_-][^@])+?@[^$#<>?]+?\.[\w]{1,}/.test(this.value);
-                if(!re) {
-                    $('#eerror').show();
-                } else {
-                    $('#eerror').hide();
-                }
-
-        });
-        $("input[name='address']").on('input', function(e) {
-            $(this).val($(this).val().replace(/[^A-Za-z0-9()/. ]/g, ''));
-
-        });
-        $("input[name='place']").on('input', function(e) {
-            $(this).val($(this).val().replace(/[^A-Za-z ]/g, ''));
-
-        });
-            
-        $("input[name='pwd']").on('input', function(e) {
-        	$(this).val($(this).val().replace(/[^0-9A-Za-z@/. ]/g, ''));
-            
-        });
-    });
-
-
-</script>
-
-{% include 'footer.html' %}
+    {% include 'footer.html' %}
+</body>
+</html>

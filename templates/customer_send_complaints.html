@@ -1,0 +1,181 @@
+{% include 'customer_header.html' %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <h1 class="text-center mb-4">Provide Feedback</h1>
+            <div class="card shadow-lg p-4 mb-5 bg-white rounded">
+                <form method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+                    <div class="mb-3">
+                        <textarea name="complaints" id="complaints" class="form-control" rows="4" placeholder="Enter your feedback here"></textarea>
+                    </div>
+                    <div class="text-center">
+                        <input type="submit" name="submit" value="Send" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+            
+
+            <h1 class="text-center mb-4">Feedbacks Registered</h1>
+            <div class="table-container">
+                <table class="table table-hover table-bordered shadow-sm">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Index</th>
+                            <th scope="col">Complaints</th>
+                            <th scope="col">Reply</th>
+                            <th scope="col">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in data['value'] %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ i['complaint'] }}</td>
+                            <td>{{ i['reply'] }}</td>
+                            <td>{{ i['date'] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Spacer to ensure footer isn’t too close -->
+<div class="footer-space" style="height: 100px;"></div>
+
+{% include 'footer.html' %}
+
+<!-- Bootstrap JS (assuming header uses it) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    function validateForm() {
+        let complaint = document.getElementById("complaints").value;
+        if (complaint.trim() === "") {
+            alert("Complaint field cannot be empty!");
+            return false;
+        }
+        return true;
+    }
+</script>
+
+<style>
+    /* General Styling */
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        padding-top: 50px;
+        padding-bottom: 50px;
+        max-width: 100%;
+    }
+
+    h1 {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    /* Card Styling for Form */
+    .card {
+        border: none;
+        border-radius: 15px;
+        background: #fff;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-control {
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        transition: border-color 0.3s ease;
+        background-color: #fff; /* Match viewmyorders */
+        color: #333; /* Darker text for readability */
+    }
+
+    .form-control:focus {
+        border-color: #0984e3;
+        box-shadow: 0 0 5px rgba(9, 132, 227, 0.5);
+    }
+
+    .btn-primary {
+        background: #0984e3;
+        border: none;
+        padding: 12px 25px;
+        font-weight: 600;
+        text-transform: uppercase;
+        border-radius: 8px;
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-primary:hover {
+        background: #0652dd;
+        transform: translateY(-2px);
+    }
+
+    /* Table Styling */
+    .table-container {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    .table {
+        background: #fff;
+        border-radius: 10px;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .thead-dark {
+        background: #2c3e50;
+        color: #fff;
+    }
+
+    .thead-dark th {
+        font-weight: 600;
+        text-transform: uppercase;
+        padding: 15px;
+        white-space: nowrap;
+        text-align: center;
+    }
+
+    .table td {
+        vertical-align: middle;
+        padding: 10px;
+        word-wrap: break-word;
+        text-align: center;
+    }
+
+    /* Column Widths for Form Table */
+    .card .table th:nth-child(1), .card .table td:nth-child(1) { width: 20%; } /* Feedbacks label */
+    .card .table td:nth-child(2) { width: 80%; } /* Textarea */
+
+    /* Column Widths for Feedbacks Table */
+    .table-container .table th:nth-child(1), .table-container .table td:nth-child(1) { width: 10%; } /* Index */
+    .table-container .table th:nth-child(2), .table-container .table td:nth-child(2) { width: 40%; } /* Complaints */
+    .table-container .table th:nth-child(3), .table-container .table td:nth-child(3) { width: 40%; } /* Reply */
+    .table-container .table th:nth-child(4), .table-container .table td:nth-child(4) { width: 10%; } /* Date */
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .table td, .thead-dark th {
+            padding: 8px;
+            font-size: 12px;
+        }
+
+        .btn-primary {
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+
+        /* Adjust form table for mobile */
+        .card .table th:nth-child(1), .card .table td:nth-child(1) { width: 30%; }
+        .card .table td:nth-child(2) { width: 70%; }
+    }
+</style>    

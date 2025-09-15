@@ -1,0 +1,252 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <!-- meta data -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!--font-family-->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Rufina:400,700" rel="stylesheet">
+    
+    <!-- title of site -->
+    <title>Grand Drive Motors</title>
+
+    <!-- For favicon png -->
+    <link rel="shortcut icon" type="image/icon" href="/static/assets1/logo/favicon.png"/>
+    
+    <!--font-awesome.min.css-->
+    <link rel="stylesheet" href="/static/assets1/css/font-awesome.min.css">
+
+    <!--linear icon css-->
+    <link rel="stylesheet" href="/static/assets1/css/linearicons.css">
+
+    <!--flaticon.css-->
+    <link rel="stylesheet" href="/static/assets1/css/flaticon.css">
+
+    <!--animate.css-->
+    <link rel="stylesheet" href="/static/assets1/css/animate.css">
+
+    <!--owl.carousel.css-->
+    <link rel="stylesheet" href="/static/assets1/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/static/assets1/css/owl.theme.default.min.css">
+    
+    <!--bootstrap.min.css-->
+    <link rel="stylesheet" href="/static/assets1/css/bootstrap.min.css">
+    
+    <!-- bootsnav -->
+    <link rel="stylesheet" href="/static/assets1/css/bootsnav.css" >    
+    
+    <!--style.css-->
+    <link rel="stylesheet" href="/static/assets1/css/style.css">
+    
+    <!--responsive.css-->
+    <link rel="stylesheet" href="/static/assets1/css/responsive.css">
+    
+    <!-- Custom CSS for alignment fixes -->
+    <style>
+        .service-content .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .single-service-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+            height: 100%;
+            box-sizing: border-box;
+            min-height: 300px; /* Adjust as needed */
+        }
+
+        .single-service-icon img {
+            max-width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+        .single-model-search select {
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        
+    </style>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+    <!--[if lte IE 9]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+    <![endif]-->
+
+    <!--welcome-hero start -->
+    <section id="home" class="welcome-hero">
+        <!-- top-area Start -->
+        <div class="top-area">
+            <div class="header-area">
+                <!-- Start Navigation -->
+                <nav class="navbar navbar-default bootsnav navbar-sticky navbar-scrollspy" data-minus-value-desktop="70" data-minus-value-mobile="55" data-speed="1000">
+                    <div class="container">
+                        <!-- Start Header Navigation -->
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <a class="navbar-brand" href="customerhome">GRAND DRIVE MOTORS<span></span></a>
+                        </div><!--/.navbar-header-->
+                        <!-- End Header Navigation -->
+
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+                            <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+                                <li><a href="customerhome">Home</a></li>
+                                <li><a href="customercart">Test Drive Bookings</a></li>
+                                <li><a href="viewmyorders">Purchases</a></li>
+                                <li><a href="view_return_request">Return Request</a></li>
+                                <li><a href="user_complaint"> Send Feedbacks</a></li>  
+                            </ul><!--/.nav -->
+                        </div><!-- /.navbar-collapse -->
+                    </div><!--/.container-->
+                </nav><!--/nav-->
+                <!-- End Navigation -->
+            </div><!--/.header-area-->
+            <div class="clearfix"></div>
+        </div><!-- /.top-area-->
+        <!-- top-area End -->
+
+        <div class="container">
+            <div class="welcome-hero-txt">
+                <h2>get your desired car in reasonable price</h2>
+                <p>
+                    Find your perfect car and drive away with confidence from our trusted resale dealership
+                </p>
+            </div>
+        </div>
+
+        <form action="" method="post">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="model-search-content">
+                            <div class="row">
+                                <div class="col-md-offset-1 col-md-2 col-sm-12">
+                                    <div class="single-model-search">
+                                        <h2>select Brand</h2>
+                                        <div class="model-select-icon">
+                                            <select class="form-control" name="brand">
+                                                <option value="">Select</option>
+                                                {% for val in data['brand'] %}
+                                                <option value="{{val['brand_id']}}">{{val['brand_name']}}</option><!-- /.option-->
+                                                {% endfor %}
+                                            </select><!-- /.select-->
+                                        </div><!-- /.model-select-icon -->
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-offset-1 col-md-2 col-sm-12">
+                                    <div class="single-model-search">
+                                        <h2>Select Category</h2>
+                                        <div class="model-select-icon">
+                                            <select class="form-control" name="cat">
+                                                <option value="">Select</option>
+                                                {% for val in data['cat'] %}
+                                                <option value="{{val['category_id']}}">{{val['category_name']}}</option><!-- /.option-->
+                                                {% endfor %}
+                                            </select><!-- /.select-->
+                                        </div><!-- /.model-select-icon -->
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="single-model-search d-flex justify-content-center">
+                                        <input type="submit" class="welcome-btn model-search-btn" name="search" value="search">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        
+        <!-- Display search results or no results message -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    {% if data['no_results'] %}
+                        <div class="alert alert-info text-center" role="alert">
+                            No cars available for the selected criteria.
+                        </div>
+                    {% else %}
+                        <!-- Existing code to display search results -->
+                        {% for vehicle in data['result'] %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </section><!--/.welcome-hero-->
+    <!--welcome-hero end -->
+
+    <!--service start -->
+    <section id="service" class="service">
+        <div class="container">
+            <div class="service-content">
+                <div class="row">
+                    {% for val in data['result'] %}
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="single-service-item">
+                            <div class="single-service-icon">
+                                <img src="{{val['vehicle_image']}}" width="320px" height="150px" alt="">
+                            </div>
+                            <h2><a href="singleview?id={{val['vehicle_id']}}">{{val['vehicle_name']}}</a></h2>
+                            <p>
+                                Price: {{val['price']}}
+                            </p>
+                            
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div><!--/.container-->
+    </section><!--/.service-->
+    <!--service end-->
+
+    <!-- Include all js compiled plugins (below), or include individual files as needed -->
+    <script src="/static/assets1/js/jquery.js"></script>
+    
+    <!--modernizr.min.js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+    
+    <!--bootstrap.min.js-->
+    <script src="/static/assets1/js/bootstrap.min.js"></script>
+    
+    <!-- bootsnav js -->
+    <script src="/static/assets1/js/bootsnav.js"></script>
+
+    <!--owl.carousel.js-->
+    <script src="/static/assets1/js/owl.carousel.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+
+    <!--Custom JS-->
+    <script src="/static/assets1/js/custom.js"></script>
+    
+</body>
+
+</html>

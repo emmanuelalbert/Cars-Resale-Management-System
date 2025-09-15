@@ -1,0 +1,50 @@
+{% include 'admin_header.html' %}
+
+<div class="top" style="height: 200px;"></div>
+
+    <h5>View Available Couirer</h5>
+    <table class="table table-striped mt-2">
+        <tr>
+            <th>#</th>
+            <th>Courier Name</th>
+            <th>Street</th>
+            <th>City</th>
+            <th>State</th>
+            <!-- <th>Email</th> -->
+            <th>Pincode</th>
+            <th>Phone</th>
+          
+            <!-- <th>Staff Join</th> -->
+            <th>Courier Status</th>
+        </tr>
+        {% for row in data['res'] %}
+        <tr>
+            <td>{{loop.index}}</td>
+           
+            <td>{{ row['cour_name'] }}</td>
+            <td>{{ row['cour_street'] }}</td>
+            <td>{{ row['cour_city'] }}</td>
+            <td>{{ row['cour_state'] }}</td>
+            
+            <!-- <td>{{ row['cour_email'] }}</td> -->
+            <td>{{ row['cour_pincode'] }}</td>
+            <td>{{ row['cour_phone'] }}</td>
+            
+            <!-- <td>{{ row['staff_join'] }}</td> -->
+            <td>{{ row['status'] }}</td>
+            <!-- <td><a href="?action=update&vid={{ row['courier_id'] }}" class="btn btn-warning btn-sm">Update</a></td> -->
+            <!-- <td><a onclick="return confirm('Are You Sure!')" href="?action=inactive&vid={{ row['courier_id'] }}" class="btn btn-danger btn-sm">Inactive</a></td> -->
+
+            {% if row['status']=='active' %}
+            <td><a onclick="return confirm('Are You Sure!')" href="?cid={{ row['courier_id'] }}&omid={{data['omid']}}" class="btn btn-success btn-sm">Assign</a></td>
+            {% else %}
+            <td> <span class="alert alert-danger "> Not Acceptable Right Now </span></td>
+            {% endif %}
+
+
+        </tr>
+        {% endfor %}
+    </table>
+</center>
+
+{% include 'footer.html' %}

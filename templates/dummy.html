@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Resell</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('porsche-911-gt3rs.jpg');
+            background-size: cover;
+            color: white;
+            margin: 0;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+        }
+        .search-bar {
+            margin: 20px;
+            text-align: center;
+        }
+        .card {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            margin: 10px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="#">Home</a>
+        <a href="#">Inventory</a>
+        <a href="#">Sell Your Car</a>
+        <a href="#">Contact Us</a>
+    </div>
+    <div class="search-bar">
+        <input type="text" placeholder="Car Name">
+        <input type="text" placeholder="Category">
+        <input type="text" placeholder="Year">
+        <input type="text" placeholder="Price Range">
+        <button>Search</button>
+    </div>
+    <div class="results">
+        <div class="card">
+            <h3>Car Name</h3>
+            <p>Category: Sports</p>
+            <p>Year: 2023</p>
+            <p>Price: $150,000</p>
+        </div>
+    </div>
+</body>
+</html>

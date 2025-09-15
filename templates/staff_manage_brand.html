@@ -1,0 +1,60 @@
+{%include 'staff_header.html'%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Brand</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card shadow-lg p-4">
+            <h2 class="text-center mb-4">Manage Brand</h2>
+            <form action="" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Brand Name</label>
+                    <input type="text" name="bname" class="form-control" value="{{ data['up'][0]['brand_name'] if data['up'] else '' }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Brand Description</label>
+                    <input type="text" name="bdescription" class="form-control" value="{{ data['up'][0]['brand_description'] if data['up'] else '' }}">
+                </div>
+                <div class="text-center">
+                    <button type="submit" name="{{ 'update' if data['up'] else 'brand' }}" class="btn btn-{{ 'primary' if data['up'] else 'success' }} px-4">{{ 'Update' if data['up'] else 'Add' }}</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="mt-5">
+            <h2 class="text-center mb-3">Brand Details</h2>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Brand Name</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in data['value'] %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ i['brand_name'] }}</td>
+                            <td>{{ i['brand_description'] }}</td>
+                            <td>
+                                <a href="?action=update&id={{ i['brand_id'] }}" class="btn btn-warning btn-sm">Update</a>
+                                <a href="?action=delete&id={{ i['brand_id'] }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{%include 'footer.html'%}

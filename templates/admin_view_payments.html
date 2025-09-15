@@ -1,40 +1,44 @@
 {% include 'admin_header.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Brand</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="top" style="height: 300px;">
 
-<center>
+<div class="container mt-5">
+    <center>
+        <h3 class="mb-4">View Payments</h3>
 
-    <h3>View Payments</h3>
-
-    <div>
-        <div>
-            <table>
-                <tr>
-                    <!-- <th>Customer Name</th> -->
-                   
-                    <th>Amount Paid</th>
-                    <th>Payment Date</th>
-                    <th>Card No</th>
-                    <th>Card Holder Name</th>
-                    <th>Payment Status</th>
-    
-                </tr>
-                {% for row in data['res'] %}
-                <tr>
-                    <!-- <td>{{ row['c_fname'] }}{{row['c_lname']}}</td> -->
-                    <!-- <td><img src="/{{row['product_img']}}" alt="" style="width: 100px; height: 100px;"><br>Product Name:{{ row['product_name'] }}<br> {{row['product_desc']}}</td> -->
-                    <td>{{ row['total_amount'] }}</td>
-                    <td>{{ row['payment_date'] }}</td>
-                    <td>{{ row['card_no'] }}</td>
-                    <td>{{ row['card_name'] }}</td>
-                    <td>Paid</td>
-                    <!-- <td><a href="adminviewdetails?omid={{row['order_master_id']}}" class="btn btn-success">View Details</a></td>
-                    <td><a href="viewpayment?omid={{row['order_master_id']}}" class="btn btn-success">View Payment</a></td> -->
-                </tr>
-                {% endfor %}
+        <div class="table-responsive">
+            <table class="table table-dark table-bordered text-center">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Amount Paid</th>
+                        <th>Payment Date</th>
+                        <th>Card No</th>
+                        <th>Card Holder Name</th>
+                        <th>Payment Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data['pay'] %}
+                    <tr>
+                        <td class="fw-bold text-success">₹{{ row['amount'] }}</td>
+                        <td class="text-warning">{{ row['date'] }}</td>
+                        <td>**** **** **** {{ row['card_no'][-4:] }}</td>
+                        <td class="text-info">{{ row['card_name'] }}</td>
+                        <td><span class="badge bg-success">Paid</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
             </table>
-           
-        
         </div>
-    </div>
-</center>
-
+    </center>
+</div>
+</div>
 {% include 'footer.html' %}

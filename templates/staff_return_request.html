@@ -1,0 +1,71 @@
+{% include 'staff_header.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Brand</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="top" style="height: 300px;">
+<center>
+   
+    {% if data['value'] %}
+
+    <h3>View Return Request</h3>
+
+<div>
+    <div>
+        <table class="table table-striped">
+            <tr>
+                <th>     </th>
+                <th>Customer Name</th>
+                <!-- <th>Product</th>
+                <th>Price</th> -->
+                <th>Reason for</th>
+                <th>Total Price</th>
+                
+                <th>Order Status</th>
+                <th>Return Status</th>
+
+            </tr>
+            {% for row in data['value'] %}
+            <tr>
+                <td></td>
+                <td>{{ row['customer_fname'] }}{{row['customer_lname']}}</td>
+                <!-- <td><img src="/{{row['product_img']}}" alt="" style="width: 100px; height: 100px;"><br>Product Name:{{ row['product_name'] }}<br> {{row['product_desc']}}</td>
+                <td>{{ row['total_price'] }}</td>-->
+                <td>{{ row['reason'] }}</td> 
+                <td>{{ row['total_amount'] }}</td>
+                <!-- <td>{{ row['date'] }}</td> -->
+                <td>{{ row['booked_status'] }}</td>
+                {%if row['rstatus']=='pending'%}
+                <td><a href="?action=return&id={{row['return_id']}}&amount={{ row['total_amount'] }}" class="btn btn-info">Return</a></td>
+                {%endif%}
+                {%if row['rstatus']=='returned'%}
+                <td><a href="?action=payment&id={{row['return_id']}}&amount={{ row['total_amount'] }}" class="btn btn-success">Return Payment</a></td>
+                {%else%}
+                <td>{{row['rstatus']}}</td>
+                {%endif%}
+                <!-- {% if row['ostatus']=='paid' %}
+                <td><a href="adminassignorder?omid={{row['booking_id']}}" class="btn btn-success">Assign Order</a></td>
+                {% endif %} -->
+            </tr>
+            {% endfor %}
+        </table>
+       
+    
+    </div>
+</div>
+</div
+{% else %}
+<h3>View Bookings</h3>
+<span style="font-size: medium;color: red;">Noting Here ...</span>
+
+{% endif %}
+</center>
+
+
+{% include 'footer.html' %}

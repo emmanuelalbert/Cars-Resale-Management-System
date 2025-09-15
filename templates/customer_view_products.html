@@ -1,28 +1,44 @@
 {% include 'customer_header.html' %}
+<div class="top">
 <center>
-    <h3>Available Items</h3>
+    <div class="divmain">
+            <h3 class="text-white">Available Items</h3>
+ 
    
-    <div >
-        <form action="" method="post">
-        <div>
-            <input type="text" placeholder="Search" name="search" id="">
-            <input type="submit" name="searchbtn" value="Search" id="">
-        </div>
-        </form>
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="Search for a product..." name="search">
+                <button type="submit" class="search-btn">🔍 Search</button>
+            </div>
+</div>
     </div>
 
-    {% for row in data['res'] %}
-    <a href="singleview?pdid={{ row['pdetails_id'] }}">
-    <div class="p-main">
-       <img width="100" height="100" src="/{{ row['product_img'] }}" alt="">
-        <p style="text-transform: uppercase;">{{ row['product_name'] }}</p>
-        <p style="font-size: .8em;">{{ row['product_desc'] }}</p>
-        <p>Price: <span style="font-weight: 900;">₹{{ row['selling_price'] }}</span> </p>
+    <div class="container">
+        <div class="row">
+            {% for row in data['res1'] %}
+    <a  href="singleview?pdid={{ row['vehicle_id'] }}" >
       
-    </div>
-    </a>
+     
+            <div class="card"  >
+                    
+                    <img class="card-img-top" width="200" height="100" src="/{{ row['vehicle_image'] }}" alt="">
+                    <div class="card-body">
+                        <br><br>
+                        <br>
+                        <h5 class="card-title">Product:  {{row['vehicle_name']}}</h5>
+                        <h6>Brand: {{row['brand_name']}}</h6>
+                        <p class="card-text">Description:  {{row['vehicle_description']}}</p>
+                        <p class="card-price">Price: <span style="font-weight: 900;">₹{{ row['amount'] }}</span></p>
+                        
+                        <a href="singleview?id={{row['vehicle_id']}}" class="btn btn-primary">Test Drive</a>
+                        <a href="singleview?id={{row['vehicle_id']}}" class="btn btn-primary">Buy</a>
+                    </div>
+                </div>
+        
+        </a>
    
     {% endfor %}  
+        </div>
+    </div>
  
 </center>
 
@@ -36,6 +52,70 @@
 
         background: rgb(200, 222, 219);
     }
+    
+
+    
+.card {
+    width: 18rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-img-top {
+    height: 200px;
+    object-fit: cover;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  
+  .card-title {
+    font-weight: bold;
+  }
+  
+  .card-price {
+    font-weight: bold;
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+  }
+  .search-box {
+    width: 300px;
+    padding: 12px 15px;
+    border: 2px solid #9cebd5;
+    border-radius: 30px;
+    font-size: 16px;
+    outline: none;
+    background-color: #ffffff;
+    color: #474747;
+    transition: 0.3s;
+}
+
+.search-box:focus {
+    border-color: #79b0a1;
+}
+
+/* Search Button */
+.search-btn {
+    margin-left: 10px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 30px;
+    background-color: #9cebd5;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.search-btn:hover {
+    background-color: #79b0a1;
+}
+
 </style>
 
 

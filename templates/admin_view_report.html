@@ -1,0 +1,465 @@
+{% include 'admin_header.html' %}
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%);
+        margin: 0;
+        padding: 0;
+        color: #333;
+        min-height: 100vh;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+    }
+
+    .search-section {
+        background: rgba(255, 255, 255, 0.98);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+        backdrop-filter: blur(10px);
+    }
+
+    .search-section h1 {
+        color: #1a2a44;
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin: 0 0 1.5rem;
+        text-align: center;
+    }
+
+    .search-form {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .form-group label {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #2c3e50;
+    }
+
+    .form-group input {
+        padding: 0.75rem;
+        border: 1px solid #e0e6ed;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .search-btn {
+        background: #3b82f6;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background 0.3s ease;
+    }
+
+    .search-btn:hover {
+        background: #2563eb;
+    }
+
+    .table-container {
+        background: rgba(255, 255, 255, 0.98);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        overflow-x: auto;
+        backdrop-filter: blur(10px);
+    }
+
+    h3 {
+        color: #1a2a44;
+        font-size: 1.8rem;
+        font-weight: 700;
+        text-align: center;
+        margin: 0 0 1.5rem;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    th, td {
+        padding: 1rem;
+        text-align: left;
+        font-size: 0.95rem;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    th {
+        background: #f8fafc;
+        color: rgb(0, 0, 0);
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+    }
+
+    tr {
+        transition: background 0.2s ease;
+    }
+
+    tr:hover {
+        background: #f8fafc;
+    }
+
+    .product-image {
+        width: 70px;
+        height: 70px;
+        border-radius: 10px;
+        object-fit: cover;
+        border: 1px solid #e0e6ed;
+    }
+
+    .vehicle-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .vehicle-info strong {
+        color: #1a2a44;
+        font-weight: 600;
+    }
+
+    .badge {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border-radius: 20px;
+        display: inline-block;
+    }
+
+    .badge-success {
+        background: #22c55e;
+        color: white;
+    }
+
+    .badge-warning {
+        background: #f59e0b;
+        color: white;
+    }
+
+    .badge-danger {
+        background: #ef4444;
+        color: white;
+    }
+
+    .no-data {
+        text-align: center;
+        padding: 2rem;
+        font-size: 1.1rem;
+        color: #64748b;
+        font-style: italic;
+        background: #f8fafc;
+        border-radius: 12px;
+        margin: 1rem 0;
+    }
+
+    .print-btn {
+        display: block;
+        margin: 1.5rem auto 0;
+        padding: 0.75rem 1.5rem;
+        background: #22c55e;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background 0.3s ease;
+    }
+
+    .print-btn:hover {
+        background: #16a34a;
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            margin: 1rem auto;
+            padding: 0 1rem;
+        }
+
+        .search-section {
+            padding: 1.5rem;
+        }
+
+        .search-form {
+            flex-direction: column;
+        }
+
+        .table-container {
+            padding: 1rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .product-image {
+            width: 50px;
+            height: 50px;
+        }
+    }
+
+    /* Print-specific styles */
+    @media print {
+        body {
+            background: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container, .search-section, .print-btn, .search-form, .no-data {
+            display: none; /* Hide non-essential elements */
+        }
+
+        #printableArea {
+            display: block !important;
+            margin: 0;
+            padding: 0;
+        }
+
+        .table-container {
+            box-shadow: none;
+            border: none;
+            padding: 0;
+            background: none;
+            overflow: visible;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #000;
+            font-size: 12pt;
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+            font-size: 12pt;
+        }
+
+        th {
+            background: #e0e0e0;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .product-image {
+            width: 50px;
+            height: 50px;
+            border: none;
+        }
+
+        .vehicle-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge {
+            padding: 5px 10px;
+            color: #000;
+            border: 1px solid #000;
+            border-radius: 0;
+            background: none;
+        }
+
+        h3 {
+            text-align: center;
+            font-size: 16pt;
+            margin-bottom: 10px;
+            color: #000;
+        }
+
+        /* Ensure images print correctly */
+        img {
+            max-width: 50px;
+            height: auto;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .print-btn {
+            display: none !important; /* Explicitly hide print button in print */
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="search-section">
+        <h1>REPORTS</h1>
+        <form action="" method="post" class="search-form">
+            <div class="form-group">
+                <label for="fdate">From Date</label>
+                <input type="date" name="fdate" id="fdate" required>
+            </div>
+            <div class="form-group">
+                <label for="todate">To Date</label>
+                <input type="date" name="todate" id="todate" required>
+            </div>
+            <button type="submit" name="dsch" class="search-btn">Search</button>
+        </form>
+    </div>
+
+    {% if data['res'] %}
+    <div id="printableArea">
+        <h3>Vehicle Reports</h3>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Vehicle</th>
+                        <th>Customer</th>
+                        <th>Price</th>
+                        <th>Total Amount</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data['res'] %}
+                    <tr>
+                        <td>
+                            <div class="vehicle-info">
+                                <img src="/{{ row['vehicle_image'] }}" class="product-image" alt="{{ row['vehicle_name'] }}">
+                                <strong>{{ row['vehicle_name'] }}</strong>
+                            </div>
+                        </td>
+                        <td>{{ row['customer_fname'] }} {{ row['customer_lname'] }}</td>
+                        <td>₹{{ row['price'] }}</td>
+                        <td>₹{{ row['total_amount'] }}</td>
+                        <td>{{ row['date'] }}</td>
+                        <td>
+                            <span class="badge 
+                                {% if row['booked_status'] == 'Approved' %} badge-success
+                                {% elif row['booked_status'] == 'Pending' %} badge-warning
+                                {% else %} badge-danger {% endif %}">
+                                {{ row['booked_status'] }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button onclick="Printpage()" class="print-btn">Print Report</button>
+        </div>
+    </div>
+    <script>
+        function Printpage() {
+            // Open a new window for printing
+            const printWindow = window.open('', '_blank');
+            const printContent = document.getElementById("printableArea").innerHTML;
+            
+            // Create the print document with styles
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Vehicle Reports</title>
+                    <style>
+                        body {
+                            font-family: 'Arial', sans-serif;
+                            margin: 20px;
+                            color: #000;
+                        }
+                        .table-container {
+                            width: 100%;
+                        }
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            border: 1px solid #000;
+                            font-size: 12pt;
+                        }
+                        th, td {
+                            border: 1px solid #000;
+                            padding: 8px;
+                            text-align: left;
+                        }
+                        th {
+                            background: #e0e0e0;
+                            font-weight: bold;
+                            text-transform: uppercase;
+                        }
+                        .product-image {
+                            width: 50px;
+                            height: 50px;
+                            border: none;
+                        }
+                        .vehicle-info {
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                        }
+                        .badge {
+                            padding: 5px 10px;
+                            border: 1px solid #000;
+                            border-radius: 0;
+                            background: none;
+                            color: #000;
+                        }
+                        h3 {
+                            text-align: center;
+                            font-size: 16pt;
+                            margin-bottom: 10px;
+                        }
+                        img {
+                            max-width: 50px;
+                            height: auto;
+                            -webkit-print-color-adjust: exact;
+                            print-color-adjust: exact;
+                        }
+                        .print-btn {
+                            display: none; /* Hide print button in print window */
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${printContent}
+                </body>
+                </html>
+            `);
+            
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
+            printWindow.close();
+        }
+    </script>
+    {% else %}
+    <div class="no-data">No Bookings Found</div>
+    {% endif %}
+</div>
+
+{% include 'footer.html' %}

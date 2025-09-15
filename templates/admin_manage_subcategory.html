@@ -1,13 +1,19 @@
 {% include 'admin_header.html' %}
 <center>
-<h3>Manage Sub Category</h3>
+
+    <div class="top">
+        <h3 class="text-black mb-4">Manage Sub Category</h3>
+        <div class="divmain">
+
+ 
+
 
     <form action="" method="post">
 
-        <div>
-            <div>
+        <div style="width: 400px;color:white">
+            <div >
                 <label for="">Select Category: </label>
-                <select required name="catid" id="">
+                <select required name="catid" id="" class="form-control mt-2">
                     <option value="{% if data['raw'] %}{{data['raw'][0]['cat_id']}}{% endif %}">{% if data['raw'] %}{{data['raw'][0]['cat_name']}}{% else %} Select  {% endif %}</option>
                     {% for row in data['cat'] %}
                     <option value="{{ row['cat_id'] }}">{{ row['cat_name'] }}</option>
@@ -19,11 +25,11 @@
 
         <div>
                 
-            <input type="text" required placeholder="Sub category Name" name="name" id="" value="{% if data['raw'] %}{{data['raw'][0]['subcat_name']}}{% endif %}">
+            <input type="text" style="width: 400px;margin-top:20px;" class="form-control" required placeholder="Sub category Name" name="name" id="" value="{% if data['raw'] %}{{data['raw'][0]['subcat_name']}}{% endif %}">
         </div>
         <div>
                 
-            <input type="text" required placeholder="Sub category description" name="desc" id="" value="{% if data['raw'] %}{{data['raw'][0]['subcat_desc']}}{% endif %}">
+            <input type="text" style="width: 400px;margin-top:20px;" class="form-control" required placeholder="Sub category description" name="desc" id="" value="{% if data['raw'] %}{{data['raw'][0]['subcat_desc']}}{% endif %}">
               
          
         </div>
@@ -31,15 +37,18 @@
         
          
          <div>
-            <input type="submit" {% if data['raw'] %} name="update" value="Update" {% else %} value="submit" name="submit" {% endif %}>
+            <input class="btn btn-success mt-3 col-4" type="submit" {% if data['raw'] %} name="update" value="Update" {% else %} value="submit" name="submit" {% endif %}>
          </div>
 
     </form>
 
+</div>
+</div>
+
     <br><br>
 
     <h5>View Available Subcategory</h5>
-    <table>
+    <table class="table table-striped">
         <tr>
             <th>index</th>
             <th>Sub Category</th>
@@ -54,7 +63,7 @@
             <td>{{ row['subcat_desc'] }}</td>
             <!-- <td>{{ row['status'] }}</td> -->
            
-            <td><a href="?action=update&subid={{ row['subcat_id'] }}">Update</a></td>
+            <td><a href="?action=update&subid={{ row['subcat_id'] }}" class="btn btn-warning btn-sm">Update</a></td>
             <!-- <td><a onclick="return confirm('Are You Sure!')" href="?action=active&subid={{ row['subcategory_id'] }}">Active</a></td> -->
             <!-- <td><a onclick="return confirm('Are You Sure!')" href="?action=inactive&subid={{ row['subcategory_id'] }}">Inactive</a></td> -->
         </tr>

@@ -1,49 +1,60 @@
+
 {% include 'admin_header.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Brand</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="top" style="height: 300px;">
 
-<center>
-   
-    {% if data['res'] %}
+<div class="container mt-5">
+    <center>
+        <h3 class="mb-4">View Details</h3>
 
-    <h3>View Details</h3>
+        {% if data['res'] %}
+        <div class="table-responsive">
+            <table class="table table-dark table-bordered text-center">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Product</th>
+                        <th>Total Price</th>
+                        <th>Purchase Date</th>
+                        <th>Purchase Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data['res'] %}
+                    <tr>
+                        <td>
+                            <img src="/{{ row['vehicle_image'] }}" alt="Product Image" class="img-thumbnail"
+                                style="width: 100px; height: 100px;">
+                            <br>
+                            <strong>{{ row['vehicle_name'] }}</strong>
+                            <br>
+                            <span class="text-muted">{{ row['vehicle_description'] }}</span>
+                        </td>
+                        <td class="fw-bold text-success">₹{{ row['total_amount'] }}</td>
+                        <td class="text-warning">{{ row['date'] }}</td>
+                        <td>
+                            <span class="badge {% if row['booked_status'] == 'Confirmed' %} bg-success {% elif row['booked_status'] == 'Pending' %} bg-warning {% else %} bg-danger {% endif %}">
+                                {{ row['booked_status'] }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
-<div>
-    <div>
-        <table>
-            <tr>
-                <!-- <th>Customer Name</th> -->
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total Price</th>
-                <th>Order Date</th>
-                <th>Order Status</th>
-
-            </tr>
-            {% for row in data['res'] %}
-            <tr>
-                <!-- <td>{{ row['c_fname'] }}{{row['c_lname']}}</td> -->
-                <td><img src="/{{row['product_img']}}" alt="" style="width: 100px; height: 100px;"><br>Product Name:{{ row['product_name'] }}<br> {{row['product_desc']}}</td>
-                <td>{{ row['total_price'] }}</td>
-                <td>{{ row['quantity'] }}</td>
-                <td>{{ row['total_amount'] }}</td>
-                <td>{{ row['date'] }}</td>
-                <td>{{ row['ostatus'] }}</td>
-                <!-- <td><a href="adminviewdetails?omid={{row['order_master_id']}}" class="btn btn-success">View Details</a></td>
-                <td><a href="viewpayment?omid={{row['order_master_id']}}" class="btn btn-success">View Payment</a></td> -->
-            </tr>
-            {% endfor %}
-        </table>
-       
-    
-    </div>
+        {% else %}
+        <h3>View Details</h3>
+        <span style="font-size: medium; color: red;">Nothing Here...</span>
+        {% endif %}
+    </center>
 </div>
-
-{% else %}
-<h3>View Details</h3>
-<span style="font-size: medium;color: red;">Noting Here ...</span>
-
-{% endif %}
-</center>
-
-
+</div>
 {% include 'footer.html' %}

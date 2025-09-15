@@ -1,6 +1,6 @@
 import mysql.connector
 password=""
-database="fireshop"
+database="rajagiri_car_resell"
 def select(q):
 	cnx=mysql.connector.connect(user="root",password=password,host="localhost", database=database)
 	cur=cnx.cursor(dictionary=True)

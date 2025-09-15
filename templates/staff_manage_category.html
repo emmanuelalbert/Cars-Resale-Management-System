@@ -1,108 +1,152 @@
 {% include 'staff_header.html' %}
-<center>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Category</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .top {
+            padding: 20px 0;
+        }
+        h3, h5 {
+            font-weight: bold;
+            color: #343a40;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .form-container, .table-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 0 auto;
+        }
+        .form-container {
+            max-width: 500px;
+        }
+        .form-control {
+            margin-bottom: 15px;
+        }
+        .table-container {
+            max-width: 800px;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+            text-align: center;
+        }
+        .table th {
+            background-color: #343a40;
+            color: #fff;
+        }
+        .btn {
+            margin: 5px;
+        }
+        .delete-link {
+            color: #dc3545;
+            text-decoration: none;
+        }
+        .delete-link:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            .form-container, .table-container {
+                padding: 10px;
+            }
+            .table th, .table td {
+                font-size: 0.9rem;
+            }
+            .table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top">
+        <div class="container">
+            <h3>Manage Category</h3>
+            <div class="form-container">
+                <form action="" method="post">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Category Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Category Name" required
+                               value="{% if data['raw'] %}{{data['raw'][0]['category_name']}}{% endif %}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="desc" class="form-label">Category Description</label>
+                        <input type="text" class="form-control" id="desc" name="desc" placeholder="Category Description" required
+                               value="{% if data['raw'] %}{{data['raw'][0]['category_description']}}{% endif %}">
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success"
+                                {% if data['raw'] %} name="update" value="Update" {% else %} name="submit" value="Submit" {% endif %}>
+                            {% if data['raw'] %}Update{% else %}Submit{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
 
-<h3>Manage Category</h3>
-
-    <form action="" method="post">
-
-        <div>
-                
-            <input type="text" required placeholder="Category Name" name="name" id="" value="{% if data['raw'] %}{{data['raw'][0]['cat_name']}}{% endif %}">
+            <h5 class="mt-5">View Available Categories</h5>
+            <div class="table-container">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Index</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in data['res'] %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ row['category_name'] }}</td>
+                            <td>{{ row['category_description'] }}</td>
+                            <td>
+                                <a href="?action=delete&cat_id={{row['category_id']}}" class="delete-link"
+                                   onclick="return confirm('Are you sure?')">Delete</a>
+                                <a href="?action=update&cat_id={{row['category_id']}}" class="btn btn-warning btn-sm"
+                                   onclick="return confirm('Are you sure?')">Update</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div>
-                
-            <input type="text" required placeholder="Category description" name="desc" id="" value="{% if data['raw'] %}{{data['raw'][0]['cat_desc']}}{% endif %}">
-              
-         
-        </div>
-        
-        
-         
-         <div>
-            <input type="submit" {% if data['raw'] %} name="update" value="Update" {% else %} value="submit" name="submit" {% endif %}>
-         </div>
+    </div>
 
-    </form>
+    {% include 'footer.html' %}
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(function() {
+            // Input validation for category name (letters and spaces only)
+            $("input[name='name']").on('input', function(e) {
+                $(this).val($(this).val().replace(/[^A-Za-z ]/g, ''));
+            });
 
-    <br><br>
-
-    <h5>View Available Category</h5>
-    <table>
-        <tr>
-            <th>index</th>
-            <th>Category</th>
-            <th>Description</th>
-            <!-- <th>Status</th> -->
-            
-        </tr>
-        {% for row in data['res'] %}
-        <tr>
-            <td>{{ loop.index }}</td>
-            <td>{{ row['cat_name'] }}</td>
-            <td>{{ row['cat_desc'] }}</td>
-            <!-- <td>{{ row['status'] }}</td> -->
-           
-            <td><a  a onclick="return confirm('Are You Sure!')"href="?action=update&cat_id={{ row['cat_id'] }}">Update</a></td>
-            <!-- <td><a onclick="return confirm('Are You Sure!')" href="?action=active&cat_id={{ row['cat_id'] }}">Active</a></td>
-            <td><a onclick="return confirm('Are You Sure!')" href="?action=inactive&cat_id={{ row['cat_id'] }}">Inactive</a></td> -->
-        </tr>
-        {% endfor %}
-    </table>
-</center>
-
-<script src="
-https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+            // Input validation for description (letters, numbers, spaces, and basic punctuation)
+            $("input[name='desc']").on('input', function(e) {
+                $(this).val($(this).val().replace(/[^A-Za-z0-9,. ]/g, ''));
+            });
+        });
     </script>
-<script>
-    $(function() {
-        $("input[name='fname']").on('input', function(e) {
-            $(this).val($(this).val().replace(/[^A-Za-z ]/g, ''));
-
-        });
-        $("input[name='lname']").on('input', function(e) {
-            $(this).val($(this).val().replace(/[^A-Za-z ]/g, ''));
-
-        });
-        // $("input[name='dob']").on('input', function(e) {
-        //     $(this).val($(this).val().replace(/[^0-9/]/g, ''));
-
-        // });
-        
-        $("input[name='phone']").on('input', function(e) {
-        	$(this).val($(this).val().replace(/[^0-9]/g, ''));
-            
-        });
-        $("input[name='pin']").on('input', function(e) {
-        	$(this).val($(this).val().replace(/[^0-9]/g, ''));
-            
-        });
-        $("input[name='email']").on('input', function(e) {
-              var re = /([A-Z0-9a-z_-][^@])+?@[^$#<>?]+?\.[\w]{1,}/.test(this.value);
-                if(!re) {
-                    $('#eerror').show();
-                } else {
-                    $('#eerror').hide();
-                }
-
-        });
-        $("input[name='address']").on('input', function(e) {
-            $(this).val($(this).val().replace(/[^A-Za-z0-9()/. ]/g, ''));
-
-        });
-        $("input[name='place']").on('input', function(e) {
-            $(this).val($(this).val().replace(/[^A-Za-z ]/g, ''));
-
-        });
-            
-        $("input[name='pwd']").on('input', function(e) {
-        	$(this).val($(this).val().replace(/[^0-9A-Za-z@/. ]/g, ''));
-            
-        });
-    });
-
-
-</script>
-
-{% include 'footer.html' %}
+</body>
+</html>

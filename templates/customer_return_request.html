@@ -1,0 +1,260 @@
+{% include 'customer_header.html' %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            {% if data['refund'] %}
+            <!-- View Refund Details -->
+            <h3 class="text-center mb-4">View Refund Details</h3>
+            <div class="table-container">
+                <table class="table table-hover table-bordered shadow-sm">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in data['value'] %}
+                        <tr>
+                            <td>₹{{ i['amount'] }}</td>
+                            <td>{{ i['date'] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <!-- View Return Request -->
+            <h3 class="text-center mb-4">View Return Request</h3>
+            <div class="table-container">
+                <table class="table table-hover table-bordered shadow-sm">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Image</th>
+                            <th scope="col">Vehicle Name</th>
+                            <th scope="col">Request</th>
+                            <th scope="col">Requested Date</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in data['value'] %}
+                        <tr>
+                            <td>
+                                <div class="image-container">
+                                    <img src="/{{ i['vehicle_image'] }}" alt="{{ i['vehicle_name'] }}" class="img-fluid">
+                                </div>
+                            </td>
+                            <td>{{ i['vehicle_name'] }}</td>
+                            <td>{{ i['reason'] }}</td>
+                            <td>{{ i['rdate'] }}</td>
+                            <td>
+                                <span class="badge {{ 'bg-success' if i['rstatus'] == 'refund' else 'bg-danger' if i['rstatus'] == 'return cancelled' else 'bg-warning' }}">
+                                    {{ i['rstatus'] | capitalize }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if i['rstatus'] == 'refund' %}
+                                <a href="?action=return&id={{ i['return_id'] }}" class="btn btn-info btn-sm">View Payment Returned</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Spacer to ensure footer isn’t too close -->
+<div class="footer-space" style="height: 100px;"></div>
+
+{% include 'footer.html' %}
+
+<!-- Bootstrap JS (assuming header uses it) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<style>
+    /* General Styling */
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        padding-top: 50px;
+        padding-bottom: 50px;
+        max-width: 100%;
+    }
+
+    h2, h3 {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    /* Card Styling for Form */
+    .card {
+        border: none;
+        border-radius: 15px;
+        background: #fff;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-control {
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        transition: border-color 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #0984e3;
+        box-shadow: 0 0 5px rgba(9, 132, 227, 0.5);
+    }
+
+    .btn-primary {
+        background: #0984e3;
+        border: none;
+        padding: 12px 25px;
+        font-weight: 600;
+        text-transform: uppercase;
+        border-radius: 8px;
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-primary:hover {
+        background: #0652dd;
+        transform: translateY(-2px);
+    }
+
+    /* Table Styling */
+    .table-container {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    .table {
+        background: #fff;
+        border-radius: 10px;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .thead-dark {
+        background: #2c3e50;
+        color: #fff;
+    }
+
+    .thead-dark th {
+        font-weight: 600;
+        text-transform: uppercase;
+        padding: 15px;
+        white-space: nowrap;
+        text-align: center;
+    }
+
+    .table td {
+        vertical-align: middle;
+        padding: 10px;
+        word-wrap: break-word;
+        text-align: center;
+    }
+
+    /* Column Widths for Refund Table */
+    .table-container:nth-child(1) .table th:nth-child(1), 
+    .table-container:nth-child(1) .table td:nth-child(1) { width: 50%; } /* Amount */
+    .table-container:nth-child(1) .table th:nth-child(2), 
+    .table-container:nth-child(1) .table td:nth-child(2) { width: 50%; } /* Date */
+
+    /* Column Widths for Return Request Table */
+    .table th:nth-child(1), .table td:nth-child(1) { width: 15%; } /* Image */
+    .table th:nth-child(2), .table td:nth-child(2) { width: 25%; } /* Vehicle Name */
+    .table th:nth-child(3), .table td:nth-child(3) { width: 20%; } /* Request */
+    .table th:nth-child(4), .table td:nth-child(4) { width: 15%; } /* Requested Date - reduced */
+    .table th:nth-child(5), .table td:nth-child(5) { width: 10%; } /* Status */
+    .table th:nth-child(6), .table td:nth-child(6) { width: 15%; } /* Action - increased */
+
+    .badge {
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 20px;
+        white-space: nowrap;
+        display: inline-block;
+    }
+
+    .btn-info {
+        padding: 6px 10px; /* Adjusted padding to fit text */
+        font-weight: 500;
+        font-size: 14px; /* Slightly larger font for readability */
+        border-radius: 5px;
+        transition: background 0.3s ease;
+        white-space: normal; /* Allow text wrapping if needed */
+        display: inline-block;
+        max-width: 100%; /* Ensure button fits within column */
+    }
+
+    .btn-info:hover {
+        background: #117a8b;
+    }
+
+    /* Image Container */
+    .image-container {
+        width: 120px;
+        height: 140px;
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .image-container img:hover {
+        transform: scale(1.05);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .image-container {
+            width: 80px;
+            height: 100px;
+        }
+
+        .table td, .thead-dark th {
+            padding: 8px;
+            font-size: 12px;
+        }
+
+        .btn-info {
+            padding: 4px 8px;
+            font-size: 11px;
+        }
+
+        .badge {
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+
+        /* Adjust column widths for smaller screens (Return Request Table) */
+        .table th:nth-child(1), .table td:nth-child(1) { width: 20%; }
+        .table th:nth-child(2), .table td:nth-child(2) { width: 25%; }
+        .table th:nth-child(3), .table td:nth-child(3) { width: 20%; }
+        .table th:nth-child(4), .table td:nth-child(4) { width: 15%; }
+        .table th:nth-child(5), .table td:nth-child(5) { width: 10%; }
+        .table th:nth-child(6), .table td:nth-child(6) { width: 20%; } /* Increased for mobile */
+    }
+</style>

@@ -1,49 +1,98 @@
 {% include 'admin_header.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Vehicles</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .page-header {
+            padding: 50px 0;
+            background-color: transparent;
+            color: black;
+            text-align: center;
+            border-bottom: 2px solid #dee2e6;  /* Optional separator line */
+        }
+        
+        .card-style {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+            margin-top: -100px;
+        }
+        table th {
+            background-color: #0d6efd;
+            color: white;
+            text-align: center;
+        }
+        table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+        .btn-info, .btn-success {
+            width: 120px;
+            border-radius: 25px;
+        }
+        .btn-info:hover, .btn-success:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
 
-<center>
-   
-    {% if data['res'] %}
-
-    <h3>View Bookings</h3>
-
-<div>
-    <div>
-        <table>
-            <tr>
-                <th>Customer Name</th>
-                <!-- <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th> -->
-                <th>Total Price</th>
-                <th>Order Date</th>
-                <th>Order Status</th>
-
-            </tr>
-            {% for row in data['res'] %}
-            <tr>
-                <td>{{ row['c_fname'] }}{{row['c_lname']}}</td>
-                <!-- <td><img src="/{{row['product_img']}}" alt="" style="width: 100px; height: 100px;"><br>Product Name:{{ row['product_name'] }}<br> {{row['product_desc']}}</td>
-                <td>{{ row['total_price'] }}</td>
-                <td>{{ row['quantity'] }}</td> -->
-                <td>{{ row['total_amount'] }}</td>
-                <td>{{ row['date'] }}</td>
-                <td>{{ row['ostatus'] }}</td>
-                <td><a href="adminviewdetails?omid={{row['order_master_id']}}" class="btn btn-success">View Details</a></td>
-                <td><a href="adminviewpayment?omid={{row['order_master_id']}}" class="btn btn-success">View Payment</a></td>
-            </tr>
-            {% endfor %}
-        </table>
-       
-    
-    </div>
+<div class="page-header">
+    <h2>Manage Vehicle Bookings</h2>
 </div>
 
-{% else %}
-<h3>View Bookings</h3>
-<span style="font-size: medium;color: red;">Noting Here ...</span>
+<div class="container card-style">
 
-{% endif %}
-</center>
+    {% if data['res'] %}
+    <h4 class="mb-4">Booking Details</h4>
 
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Customer Name</th>
+                    <th>Total Price</th>
+                    <th>Purchase Date</th>
+                    <th>Purchase Status</th>
+                    <th colspan="2">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data['res'] %}
+                <tr>
+                    <td>{{ row['customer_fname'] }} {{ row['customer_lname'] }}</td>
+                    <td>₹{{ row['total_amount'] }}</td>
+                    <td>{{ row['date'] }}</td>
+                    <td>{{ row['booked_status'] }}</td>
+                    <td>
+                        <a href="adminviewdetails?omid={{row['booking_id']}}" class="btn btn-info">View Details</a>
+                    </td>
+                    <td>
+                        <a href="adminviewpayment?omid={{row['booking_id']}}" class="btn btn-success">View Payment</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
+    {% else %}
+    <h4 class="mb-4">Booking Details</h4>
+    <div class="alert alert-warning text-center" role="alert">
+        Nothing Here ...
+    </div>
+    {% endif %}
+</div>
+
+<br><br>
 {% include 'footer.html' %}
+</body>
+</html>

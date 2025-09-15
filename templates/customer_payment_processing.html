@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Processing Payment</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        #gif-container {
+            text-align: center;
+        }
+        img {
+            max-width: 300px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="gif-container">
+        <img id="status-gif" src="{{ url_for('static', filename='images/Firearm-Payment-Processing.gif') }}" alt="Processing Payment">
+        <p id="status-text" style="font-size: 18px; font-weight: bold; margin-top: 10px;">Processing your payment...</p>
+    </div>
+
+    <script>
+        const statusGif = document.getElementById('status-gif');
+        const statusText = document.getElementById('status-text');
+
+        setTimeout(() => {
+            // Switch to success GIF
+            statusGif.src = "{{ url_for('static', filename='images/paydone.gif') }}";
+            statusText.textContent = "Payment Successful!";
+            
+            // Redirect to view orders after 2s
+            setTimeout(() => {
+                window.location.href = "{{ url_for('customer.viewmyorders') }}";
+            }, 2000);
+        }, 3000);
+    </script>
+</body>
+</html>
