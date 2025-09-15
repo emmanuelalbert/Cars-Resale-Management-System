@@ -49,12 +49,6 @@ The platform also includes robust inventory management, tracking of spare parts,
 - **System Maintenance** – Keep the platform updated and feature-rich.
 - **Data Insights** – Identify trends, popular models, and user behavior for informed decisions.
 
----
-
-## 🧠 Machine Learning Integration
-- Automatically calculates **fair and competitive car prices** from user input.
-- Enhances **pricing transparency** and **user trust**.
-- Provides **data-driven insights** into customer preferences and service performance.
 
 ---
 
